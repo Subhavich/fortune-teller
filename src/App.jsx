@@ -1,6 +1,10 @@
 import { useState } from "react";
 import OpenAI from "openai";
 import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
+import SexInput from "./components/SexInput";
+import DOBInput from "./components/DOBInput";
+import RelationshipInput from "./components/RelationshipInput";
+import JobStatusInput from "./components/JobInput";
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -47,11 +51,15 @@ const App = () => {
 🌟 ข้อมูลของลูกดวง 🌟
 วันเกิด: ${form.date} ${THAI_MONTHS[form.month - 1]} ${form.year}
 เพศ: ${form.sex}
-การเงิน (${
+<TOPIC> การเงิน (${
       form.jobStatus
     }): [Six of Pentacles, The Wheel of Fortune, Four of Pentacles]
-ความรัก (${form.relationshipStatus}): [Ace of Cups, Three of Swords, The Lovers]
-อาชีพ (${form.jobStatus}): [The Emperor, Eight of Pentacles, The Chariot]
+<TOPIC> ความรัก (${
+      form.relationshipStatus
+    }): [Ace of Cups, Three of Swords, The Lovers]
+<TOPIC> อาชีพ (${
+      form.jobStatus
+    }): [The Emperor, Eight of Pentacles, The Chariot]
 ✨ ให้จัดเต็มให้แบบครบถ้วนและน่าสนใจเลยน้า ✨
 `;
   };
@@ -88,91 +96,24 @@ const App = () => {
       <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Sex */}
-        <label className="block">
-          <span className="block font-semibold mb-2">เพศ:</span>
-          <select
-            name="sex"
-            value={form.sex}
-            onChange={handleChange}
-            className="w-full p-3 border rounded-md"
-          >
-            <option value="">เลือกเพศ</option>
-            <option value="ชาย">ชาย</option>
-            <option value="หญิง">หญิง</option>
-            <option value="ไม่ระบุ">ไม่ระบุ</option>
-          </select>
-        </label>
+        <SexInput value={form.sex} onChange={handleChange} />
 
         {/* Date of Birth */}
-        <div className="block">
-          <span className="block font-semibold mb-2">วันเกิด:</span>
-          <div className="flex space-x-2">
-            <input
-              type="number"
-              name="date"
-              placeholder="วันที่"
-              value={form.date}
-              onChange={handleChange}
-              className="w-1/3 p-3 border rounded-md"
-            />
-            <select
-              name="month"
-              value={form.month}
-              onChange={handleChange}
-              className="w-1/3 p-3 border rounded-md"
-            >
-              <option value="">เดือน</option>
-              {THAI_MONTHS.map((month, index) => (
-                <option key={index} value={index + 1}>
-                  {month}
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              name="year"
-              placeholder="ปี ค.ศ."
-              value={form.year}
-              onChange={handleChange}
-              className="w-1/3 p-3 border rounded-md"
-            />
-          </div>
-        </div>
+        <DOBInput
+          date={form.date}
+          month={form.month}
+          year={form.year}
+          onChange={handleChange}
+        />
 
         {/* Job Status */}
-        <label className="block">
-          <span className="block font-semibold mb-2">สถานะการงาน:</span>
-          <select
-            name="jobStatus"
-            value={form.jobStatus}
-            onChange={handleChange}
-            className="w-full p-3 border rounded-md"
-          >
-            <option value="">เลือกสถานะการงาน</option>
-            <option value="พนักงานประจำ">พนักงานประจำ</option>
-            <option value="เจ้าของธุรกิจ">เจ้าของธุรกิจ</option>
-            <option value="กำลังหางาน">กำลังหางาน</option>
-            <option value="กำลังศึกษา">กำลังศึกษา</option>
-            <option value="ฟรีแลนซ์">ฟรีแลนซ์</option>
-          </select>
-        </label>
+        <JobStatusInput value={form.jobStatus} onChange={handleChange} />
 
         {/* Relationship Status */}
-        <label className="block">
-          <span className="block font-semibold mb-2">สถานะความสัมพันธ์:</span>
-          <select
-            name="relationshipStatus"
-            value={form.relationshipStatus}
-            onChange={handleChange}
-            className="w-full p-3 border rounded-md"
-          >
-            <option value="">เลือกสถานะความสัมพันธ์</option>
-            <option value="โสด">โสด</option>
-            <option value="มีคนคุย">มีคนคุย</option>
-            <option value="มีแฟน">มีแฟน</option>
-            <option value="แต่งงานแล้ว">แต่งงานแล้ว</option>
-          </select>
-        </label>
+        <RelationshipInput
+          value={form.relationshipStatus}
+          onChange={handleChange}
+        />
 
         {/* Submit Button */}
         <button
