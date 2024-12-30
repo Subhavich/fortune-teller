@@ -121,7 +121,7 @@ const App = () => {
               onChange={handleChange}
               className="w-1/3 p-3 border rounded-md"
             >
-              <option value="">เลือกเดือน</option>
+              <option value="">เดือน</option>
               {THAI_MONTHS.map((month, index) => (
                 <option key={index} value={index + 1}>
                   {month}
