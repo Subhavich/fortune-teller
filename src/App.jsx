@@ -80,17 +80,7 @@ const App = () => {
           value={form.relationshipStatus}
           onChange={handleChange}
         />
-        <button
-          type="submit"
-          className={`w-full p-3 rounded-md text-white ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed puls"
-              : "bg-fuchsia-400 hover:bg-fushcia-500"
-          }`}
-          disabled={loading} // Disable the button while loading
-        >
-          {loading ? "กำลังทำนาย..." : "ถามไพ่ทาโรต์"}
-        </button>
+        <Button loading={loading} />
       </form>
 
       {/* Response */}
@@ -125,3 +115,19 @@ const App = () => {
 };
 
 export default App;
+
+const Button = ({ loading }) => {
+  return (
+    <button
+      type="submit"
+      className={`w-full p-3 rounded-md text-white ${
+        loading
+          ? "bg-fuchsia-200 cursor-not-allowed puls"
+          : "bg-fuchsia-400 hover:bg-fushcia-500"
+      }`}
+      disabled={loading} // Disable the button while loading
+    >
+      {loading ? "กำลังทำนาย..." : "ถามไพ่ทาโรต์"}
+    </button>
+  );
+};
