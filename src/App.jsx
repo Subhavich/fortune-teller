@@ -8,13 +8,18 @@ import JobStatusInput from "./components/JobInput";
 import { deriveExtension } from "./utils/prompts";
 import { sanitizeResponse } from "./utils/sanitize";
 import CardSection from "./components/CardSection";
+import { TarotCard } from "./DATA";
+import { Button } from "./components/shared/Button";
 // Initialize OpenAI
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
+const TarotDeck = new TarotCard();
+
 const App = () => {
+  console.log(TarotCard.getThreeCards());
   const [form, setForm] = useState({
     sex: "",
     date: "",
@@ -25,7 +30,7 @@ const App = () => {
   }); // Store form state
   const [response, setResponse] = useState(""); // Store AI response
   const [loading, setLoading] = useState(false); // Loading state
-
+  const [draws, setDraws] = useState([]);
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -121,19 +126,3 @@ const App = () => {
 };
 
 export default App;
-
-const Button = ({ loading }) => {
-  return (
-    <button
-      type="submit"
-      className={`w-full p-3  rounded-2xl text-white ${
-        loading
-          ? "bg-fuchsia-200 cursor-not-allowed puls"
-          : "bg-fuchsia-400 hover:bg-fushcia-500"
-      }`}
-      disabled={loading} // Disable the button while loading
-    >
-      {loading ? "กำลังทำนาย..." : "ถามไพ่ทาโรต์"}
-    </button>
-  );
-};
