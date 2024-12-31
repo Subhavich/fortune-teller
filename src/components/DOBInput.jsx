@@ -26,6 +26,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
           onChange={onChange}
           className="w-1/3 p-3 border rounded-2xl"
           max={31}
+          min={1}
         />
         <select
           name="month"
