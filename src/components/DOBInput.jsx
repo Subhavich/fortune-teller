@@ -25,6 +25,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
           value={date}
           onChange={onChange}
           className="w-1/3 p-3 border rounded-2xl"
+          max={31}
         />
         <select
           name="month"
@@ -39,14 +40,20 @@ const DOBInput = ({ date, month, year, onChange }) => {
             </option>
           ))}
         </select>
-        <input
-          type="number"
+
+        <select
           name="year"
-          placeholder="ปี ค.ศ."
           value={year}
           onChange={onChange}
           className="w-1/3 p-3 border rounded-2xl"
-        />
+        >
+          <option value="">ปี</option>
+          {Array.from({ length: 100 }).map((_, i) => (
+            <option key={i} value={2024 - Number(i)}>
+              {2024 - Number(i)}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
