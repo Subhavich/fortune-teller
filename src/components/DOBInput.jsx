@@ -16,7 +16,7 @@ const THAI_MONTHS = [
 const DOBInput = ({ date, month, year, onChange }) => {
   return (
     <div className="block">
-      <span className="block font-semibold mb-2">วันเกิด:</span>
+      <span className="block font-semibold mb-2">วันเกิด</span>
       <div className="flex space-x-2">
         <input
           type="number"
@@ -24,13 +24,13 @@ const DOBInput = ({ date, month, year, onChange }) => {
           placeholder="วันที่"
           value={date}
           onChange={onChange}
-          className="w-1/3 p-3 border rounded-md"
+          className="w-1/3 p-3 border rounded-2xl"
         />
         <select
           name="month"
           value={month}
           onChange={onChange}
-          className="w-1/3 p-3 border rounded-md"
+          className="w-1/3 p-3 border rounded-2xl"
         >
           <option value="">เดือน</option>
           {THAI_MONTHS.map((monthName, index) => (
@@ -45,7 +45,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
           placeholder="ปี ค.ศ."
           value={year}
           onChange={onChange}
-          className="w-1/3 p-3 border rounded-md"
+          className="w-1/3 p-3 border rounded-2xl"
         />
       </div>
     </div>

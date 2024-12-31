@@ -67,9 +67,12 @@ const App = () => {
   };
 
   return (
-    <div className="p-5 font-sans max-w-screen-sm mx-auto">
+    <div className="p-5 font-prompt  max-w-screen-sm mx-auto">
       <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 rounded-3xl bg-fuchsia-100/50 p-8"
+      >
         <SexInput value={form.sex} onChange={handleChange} />
         <DOBInput
           date={form.date}
@@ -123,7 +126,7 @@ const Button = ({ loading }) => {
   return (
     <button
       type="submit"
-      className={`w-full p-3 rounded-md text-white ${
+      className={`w-full p-3  rounded-2xl text-white ${
         loading
           ? "bg-fuchsia-200 cursor-not-allowed puls"
           : "bg-fuchsia-400 hover:bg-fushcia-500"

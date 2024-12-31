@@ -1,12 +1,12 @@
 const RelationshipInput = ({ value, onChange }) => {
   return (
     <label className="block">
-      <span className="block font-semibold mb-2">สถานะความสัมพันธ์:</span>
+      <span className="block font-semibold mb-2">ชีวิตรัก</span>
       <select
         name="relationshipStatus"
         value={value}
         onChange={onChange}
-        className="w-full p-3 border rounded-md"
+        className="w-full p-3 border rounded-2xl"
       >
         <option value="">เลือกสถานะความสัมพันธ์</option>
         <option value="โสด">โสด</option>
