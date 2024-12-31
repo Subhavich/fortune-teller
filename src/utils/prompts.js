@@ -43,7 +43,7 @@ export const deriveTopicString = (key, status, array) => {
   const upperKey = key.toUpperCase();
   switch (upperKey) {
     case "MONEY":
-      topic = "ชีวิตการเงิน/การเก็บเงิน/โอกาสทางการเงิน";
+      topic = "การเงิน/การลงทุน/การกู้เงิน";
       break;
     case "LOVE":
       topic = "ชีวิตความรัก/ชีวิตคู่/ความโสด";

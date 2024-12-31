@@ -1,4 +1,4 @@
-export const Button = ({ loading, handleClick }) => {
+export const Button = ({ loading, handleClick, message }) => {
   return (
     <button
       onClick={handleClick}
@@ -10,7 +10,7 @@ export const Button = ({ loading, handleClick }) => {
       }`}
       disabled={loading} // Disable the button while loading
     >
-      {loading ? "กำลังทำนาย..." : "ถามไพ่ทาโรต์"}
+      {loading ? "กำลังทำนาย..." : message}
     </button>
   );
 };

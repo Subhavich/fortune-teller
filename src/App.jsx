@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
+import { FAKE_RESPONSE, TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
 import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
@@ -13,6 +13,9 @@ import CardSection from "./components/CardSection";
 import { TarotCard } from "./DATA";
 import { Button } from "./components/shared/Button";
 import { fetchTarotResponse } from "./utils/dataFetching";
+import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaStarHalfStroke } from "react-icons/fa6";
+import StarRating from "./components/shared/StarRating";
 // Initialize OpenAI
 
 const drawStacks = [
@@ -87,28 +90,9 @@ const App = () => {
 
   const handleFakeSent = (e) => {
     e.preventDefault();
-    console.log(
-      deriveExtension(
-        form.date,
-        form.month,
-        form.year,
-        form.sex,
-        form.jobStatus,
-        form.relationshipStatus,
-        drawStacks[1]
-      )
-    );
-    console.log(
-      "here",
-      deriveTopicString("money", form.jobStatus, drawStacks[stackId].money) +
-        deriveTopicString(
-          "love",
-          form.relationshipStatus.jobStatus,
-          drawStacks[stackId].money
-        ) +
-        deriveTopicString("work", form.jobStatus, drawStacks[stackId].money)
-    );
+
     setSent(true);
+    setResponse(FAKE_RESPONSE.choices[0]);
   };
 
   return (
@@ -131,8 +115,16 @@ const App = () => {
           onChange={handleChange}
         />
         <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button loading={loading} handleClick={handleSubmit} />
-        <Button loading={loading} handleClick={handleFakeSent} />
+        <Button
+          loading={loading}
+          handleClick={handleSubmit}
+          message={"ดูคำทำนาย"}
+        />
+        <Button
+          loading={loading}
+          handleClick={handleFakeSent}
+          message={"MOCK RES"}
+        />
       </form>
       {sent && (
         <div className=" flex flex-col  space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6">
@@ -156,6 +148,7 @@ const App = () => {
                   </div>
                 ))}
               </div>
+              {!loading && response && <Summary response={response} />}
             </div>
           ))}
         </div>
@@ -192,3 +185,16 @@ const App = () => {
 };
 
 export default App;
+
+const Summary = ({ response, loading }) => {
+  const result = response.reading[0];
+  return (
+    <>
+      {loading && <p> กำลังทำนาย </p>}
+      <div className="flex flex-col items-center mt-4">
+        <p>{result.topic}</p>
+        <StarRating score={result.score} />
+      </div>
+    </>
+  );
+};
