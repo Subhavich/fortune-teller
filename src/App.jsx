@@ -39,7 +39,7 @@ const App = () => {
 
     try {
       const response = await openai.chat.completions.create({
-        model: "gpt-4-mini", // Recommend using gpt-4 for nuanced outputs
+        model: "gpt-4", // Recommend using gpt-4 for nuanced outputs
         store: true, // Optional: Store the session for later retrieval
         messages: [
           { role: "system", content: TAROT_PROMPT_SYSTEM },
