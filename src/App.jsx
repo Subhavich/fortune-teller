@@ -82,9 +82,9 @@ const App = () => {
           value={form.relationshipStatus}
           onChange={handleChange}
         />
+        <CardSection />
         <Button loading={loading} />
       </form>
-      <CardSection />
 
       {/* Response */}
       {response && (

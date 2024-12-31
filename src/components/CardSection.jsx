@@ -8,7 +8,7 @@ const CardSection = () => {
     setStackId(no);
   };
   return (
-    <div className="mt-4 grid grid-cols-12 min-h-96 border-rose-200 border-2">
+    <div className="mt-4 grid grid-cols-12 sm:min-h-80 min-h-40 ">
       <div className="relative col-span-4">
         <CardStack
           id={0}
@@ -48,7 +48,7 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
     <div
       className={`${
         display ? " -rotate-12 transition-transform" : null
-      } relative min-w-full min-h-full flex justify-center items-center`}
+      } relative translate-y-4 min-w-full min-h-full flex justify-center items-center`}
     >
       {Array.from({ length: 9 }).map((_, index) => {
         const translateX = display ? index * 2 : index * 1; // Example translation
