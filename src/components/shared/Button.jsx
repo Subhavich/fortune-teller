@@ -1,6 +1,7 @@
-export const Button = ({ loading }) => {
+export const Button = ({ loading, handleClick }) => {
   return (
     <button
+      onClick={handleClick}
       type="submit"
       className={`w-full p-3  rounded-2xl text-white ${
         loading

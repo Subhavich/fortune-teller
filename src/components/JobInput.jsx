@@ -12,7 +12,7 @@ const JobStatusInput = ({ value, onChange }) => {
         <option value="พนักงานประจำ">พนักงานประจำ</option>
         <option value="เจ้าของธุรกิจ">เจ้าของธุรกิจ</option>
         <option value="กำลังหางาน">กำลังหางาน</option>
-        <option value="กำลังศึกษา">กำลังศึกษา</option>
+        <option value="ยังเรียนอยู่">ยังเรียนอยู่</option>
         <option value="ฟรีแลนซ์">ฟรีแลนซ์</option>
       </select>
     </label>
