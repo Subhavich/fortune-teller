@@ -2,8 +2,7 @@ import card1 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
 import card3 from "../assets/Tarot3.png";
 import { useEffect, useState } from "react";
-const CardSection = () => {
-  const [stackId, setStackId] = useState(0);
+const CardSection = ({ stackId, setStackId }) => {
   const handleStackClick = (no) => {
     setStackId(no);
   };
