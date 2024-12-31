@@ -7,6 +7,7 @@ import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
 import { deriveExtension } from "./utils/prompts";
 import { sanitizeResponse } from "./utils/sanitize";
+import CardSection from "./components/CardSection";
 // Initialize OpenAI
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -38,7 +39,7 @@ const App = () => {
 
     try {
       const response = await openai.chat.completions.create({
-        model: "gpt-4-turbo", // Recommend using gpt-4 for nuanced outputs
+        model: "gpt-4-mini", // Recommend using gpt-4 for nuanced outputs
         store: true, // Optional: Store the session for later retrieval
         messages: [
           { role: "system", content: TAROT_PROMPT_SYSTEM },
@@ -83,6 +84,7 @@ const App = () => {
         />
         <Button loading={loading} />
       </form>
+      <CardSection />
 
       {/* Response */}
       {response && (
