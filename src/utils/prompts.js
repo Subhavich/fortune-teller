@@ -13,9 +13,9 @@ const THAI_MONTHS = [
   "ธ.ค.",
 ];
 
-const getNameString = (cardObject) => {
+export const getNameString = (cardObject) => {
   console.log("KIMI", cardObject.name);
-  const reversed = cardObject.reversed ? "(reversed)" : "";
+  const reversed = cardObject.reversed ? " (reversed) " : "";
   return cardObject.name + reversed;
 };
 

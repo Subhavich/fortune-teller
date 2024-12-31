@@ -5,7 +5,7 @@ import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
-import { deriveExtension } from "./utils/prompts";
+import { deriveExtension, getNameString } from "./utils/prompts";
 import { sanitizeResponse } from "./utils/sanitize";
 import CardSection from "./components/CardSection";
 import { TarotCard } from "./DATA";
@@ -140,8 +140,8 @@ const App = () => {
                   >
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
                   </div>
-                  <p className="max-w-full px-2 font-mono text-xs text-center">
-                    {card.name}
+                  <p className="max-w-full px-2 font-mono text-xs wrap  text-center">
+                    {getNameString(card)}
                   </p>
                 </div>
               ))}
