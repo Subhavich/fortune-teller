@@ -6,6 +6,7 @@ import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
 import { deriveExtension } from "./utils/prompts";
+import { sanitizeResponse } from "./utils/sanitize";
 // Initialize OpenAI
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -54,8 +55,8 @@ const App = () => {
           },
         ],
       });
-
-      setResponse(JSON.parse(response.choices[0].message.content)); // Update the response
+      console.log(response.choices[0].message.content);
+      setResponse(sanitizeResponse(response.choices[0].message.content)); // Update the response
     } catch (error) {
       console.error("Error fetching AI response:", error);
       setResponse("ขออภัย เกิดข้อผิดพลาด");
