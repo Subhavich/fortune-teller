@@ -51,14 +51,14 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
       } relative min-w-full min-h-full flex justify-center items-center`}
     >
       {Array.from({ length: 9 }).map((_, index) => {
-        const translateX = index * 4; // Example translation
+        const translateX = display ? index * 2 : index * 1; // Example translation
         const translateY = -index * 4; // Example translation
         const rotation = display ? (index % 2 === 0 ? index : -index) : 0; // Apply rotation only when clicked is true
 
         return (
           <div
             key={index}
-            className={`absolute w-20 h-28  bg-white shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-110 ${
+            className={`absolute w-14 h-20 sm:w-20 sm:h-28 bg-white shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-110 ${
               display ? shadowColor : ""
             }`}
             style={{
