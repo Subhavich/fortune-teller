@@ -20,7 +20,7 @@ const AlternatingLoader = () => {
   }, [messages]);
 
   return (
-    <div className="pt-4 flex items-center justify-center space-x-4">
+    <div className="pt-8 flex items-center justify-center space-x-4">
       <p className="text-sm font-medium text-gray-600 animate-bounce">
         {currentMessage}
       </p>
