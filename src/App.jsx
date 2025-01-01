@@ -128,18 +128,21 @@ const App = () => {
       systemPrompt: TAROT_PROMPT_SYSTEM,
       userPrompt,
     });
+    const result = response.reading[0];
+    console.log("HIT", response);
 
-    switch (topic) {
+    switch (lowerTopic) {
       case "money":
-        setMoneyResponse(response);
+        setMoneyResponse(result);
         break;
       case "love":
-        setLoveResponse(response);
+        setLoveResponse(result);
         break;
       case "work":
-        setworkResponse(response);
+        setworkResponse(result);
         break;
     }
+    setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false }));
   };
 
   return (
