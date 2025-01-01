@@ -52,7 +52,8 @@ const App = () => {
     }, 100);
   };
 
-  const handleResetDraw = () => {
+  const handleResetDraw = (e) => {
+    e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
       setSent(false);
@@ -60,7 +61,7 @@ const App = () => {
       setLoveResponse();
       setworkResponse();
       drawStacks = TarotCard.getDrawStacks();
-    }, 2000);
+    }, 300);
   };
 
   const handleChange = (e) => {
@@ -198,7 +199,7 @@ const App = () => {
           </div>
         )}
       </div>
-      {/* <ResetButton sent={sent} handleResetDraw={handleResetDraw} /> */}
+      <ResetButton sent={sent} handleResetDraw={handleResetDraw} />
     </div>
   );
 };
