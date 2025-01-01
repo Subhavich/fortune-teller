@@ -4,18 +4,13 @@ import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
-import {
-  deriveExtension,
-  getNameString,
-  deriveTopicString,
-} from "./utils/prompts";
+import { deriveExtension, deriveTopicString } from "./utils/prompts";
 import CardSection from "./components/CardSection";
 import { TarotCard } from "./DATA";
 import { Button } from "./components/shared/Button";
 import { fetchTarotResponse } from "./utils/dataFetching";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
-import { FaStarHalfStroke } from "react-icons/fa6";
 import StarRating from "./components/shared/StarRating";
+import Cards from "./components/Cards";
 // Initialize OpenAI
 
 const drawStacks = [
@@ -37,9 +32,6 @@ const drawStacks = [
 ];
 
 const App = () => {
-  console.log(TarotCard.getNormalDraw());
-  console.log(TarotCard.getReversedDraw());
-  console.log(TarotCard.getMajorArcanaDraw());
   const [form, setForm] = useState({
     sex: "",
     date: "",
@@ -49,6 +41,9 @@ const App = () => {
     relationshipStatus: "",
   }); // Store form state
   const [response, setResponse] = useState(""); // Store AI response
+  const [moneyResponse, setMoneyResponse] = useState();
+  const [loveResponse, setLoveResponse] = useState();
+  const [workResponse, setworkResponse] = useState();
   const [loading, setLoading] = useState(false); // Loading state
   const [stackId, setStackId] = useState(0);
   const [sent, setSent] = useState(false);
@@ -56,14 +51,34 @@ const App = () => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log({ ...form, [name]: value });
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    setLoading(true);
-
+  const setTrue = (e) => {
     e.preventDefault();
+    setSent(true);
+  };
+
+  const handleSendRequest = async (topic) => {
+    const lowerTopic = topic.toLowerCase();
+    console.log(lowerTopic);
+    switch (lowerTopic) {
+      case "money":
+        setLoading(true);
+        console.log("munnuy");
+        break;
+      case "love":
+        setLoading(true);
+        console.log("luv");
+        break;
+      case "work":
+        setLoading(true);
+        console.log("werks");
+        break;
+      default:
+        console.log("Invalid topic");
+        return; // Exit the function for invalid topics
+    }
 
     const userPrompt = `${TAROT_PROMPT_USER} ${deriveExtension(
       form.date,
@@ -73,18 +88,29 @@ const App = () => {
       form.jobStatus,
       form.relationshipStatus,
       drawStacks[stackId]
-    )} ${deriveTopicString(
-      "money",
-      form.jobStatus,
-      drawStacks[stackId].money
-    )}`;
+    )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
 
+    console.log(userPrompt);
+    return;
     const response = await fetchTarotResponse({
       systemPrompt: TAROT_PROMPT_SYSTEM,
       userPrompt,
     });
-    setResponse(response);
 
+    switch (topic) {
+      case "money":
+        setMoneyResponse(response);
+        break;
+      case "love":
+        setLoveResponse(response);
+        break;
+      case "work":
+        setworkResponse(response);
+        break;
+    }
+
+    // console.log(response.choices[0]);
+    setResponse(response);
     setLoading(false);
   };
 
@@ -98,10 +124,7 @@ const App = () => {
   return (
     <div className="p-5 font-prompt  max-w-screen-sm mx-auto">
       <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 rounded-3xl bg-fuchsia-100/50 p-8"
-      >
+      <form className="space-y-4 rounded-3xl bg-fuchsia-100/50 p-8">
         <SexInput value={form.sex} onChange={handleChange} />
         <DOBInput
           date={form.date}
@@ -115,46 +138,48 @@ const App = () => {
           onChange={handleChange}
         />
         <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button
-          loading={loading}
-          handleClick={handleSubmit}
-          message={"ดูคำทำนาย"}
-        />
-        <Button
-          loading={loading}
-          handleClick={handleFakeSent}
-          message={"MOCK RES"}
-        />
+        <Button loading={loading} handleClick={setTrue} message={"ดูคำทำนาย"} />
+        <Button loading={loading} handleClick={setTrue} message={"MOCK RES"} />
       </form>
+
       {sent && (
-        <div className=" flex flex-col  space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6">
-          {Object.entries(drawStacks[stackId]).map(([topic, array]) => (
+        <div className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6">
+          {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => (
             <div key={topic}>
               <b className="mb-4 block text-center">{topic.toUpperCase()}</b>
-              <div className="grid grid-cols-12">
-                {array.map((card, ind) => (
-                  <div className="col-span-4  flex flex-col space-y-2 items-center">
-                    <div
-                      className="w-20 h-32 bg-contain bg-center rounded-sm border border-gray-500 shadow-inner filter   brightness-90 contrast-125"
-                      style={{
-                        backgroundImage: `url(https://sacred-texts.com/tarot/pkt/img/${card.name_short}.jpg)`,
-                      }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
-                    </div>
-                    <p className="max-w-full px-2 font-mono text-xs wrap  text-center">
-                      {getNameString(card)}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <Cards array={array} />
+              <button
+                className="mt-4 mx-auto block border px-3 py-2 rounded-xl"
+                onClick={() => handleSendRequest(topic)}
+              >
+                เช็คความหมาย
+              </button>
               {!loading && response && <Summary response={response} />}
             </div>
           ))}
         </div>
       )}
+    </div>
+  );
+};
 
-      {response && (
+export default App;
+
+const Summary = ({ response, loading }) => {
+  const result = response.reading[0];
+  return (
+    <>
+      {loading && <p> กำลังทำนาย </p>}
+      <div className="flex flex-col items-center mt-4">
+        <p>{result.topic}</p>
+        <StarRating score={result.score} />
+      </div>
+    </>
+  );
+};
+
+{
+  /* {response && (
         <div className="mt-5 p-5 bg-gray-100 rounded-md shadow-md">
           <h3 className="text-lg font-semibold">ผลการทำนาย:</h3>
           {response.reading.map((topic) => (
@@ -179,22 +204,5 @@ const App = () => {
             </div>
           ))}
         </div>
-      )}
-    </div>
-  );
-};
-
-export default App;
-
-const Summary = ({ response, loading }) => {
-  const result = response.reading[0];
-  return (
-    <>
-      {loading && <p> กำลังทำนาย </p>}
-      <div className="flex flex-col items-center mt-4">
-        <p>{result.topic}</p>
-        <StarRating score={result.score} />
-      </div>
-    </>
-  );
-};
+      )} */
+}

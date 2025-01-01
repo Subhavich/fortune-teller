@@ -24,8 +24,7 @@ export const deriveExtension = (
   year,
   sex,
   jobStatus,
-  relationshipStatus,
-  drawStack
+  relationshipStatus
 ) => {
   return `
   <INFO>
@@ -57,6 +56,6 @@ export const deriveTopicString = (key, status, array) => {
   }
   const stringArray = array.map((cardObject) => getNameString(cardObject));
 
-  return ` หัวข้อ <TOPIC> ${topic} ( ลูกดวง ${status} ) : [${stringArray.toString()}]  ✨ ให้จัดเต็มให้แบบครบถ้วนและน่าสนใจเลยน้า ✨
+  return ` <TOPIC> ${upperKey} : / <parameters> : ${topic} ( ลูกดวง ${status} ) : [${stringArray.toString()}]  ✨ ให้จัดเต็มให้แบบครบถ้วนและน่าสนใจเลยน้า ✨
 `;
 };
