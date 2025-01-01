@@ -1,3 +1,22 @@
+/* Global resets or overrides */
+html,
+body {
+  background: white; /* Or any intended background */
+  overflow: hidden; /* Prevent scroll-based artifacts */
+  height: 100%; /* Ensure full viewport height */
+}
+
+::before,
+::after {
+  content: none !important;
+  background: none !important;
+}
+
+* {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
