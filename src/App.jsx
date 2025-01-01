@@ -5,13 +5,18 @@ import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
-import { deriveExtension, deriveTopicString } from "./utils/prompts";
+import {
+  deriveExtension,
+  deriveTopicString,
+  getNameString,
+} from "./utils/prompts";
 import CardSection from "./components/CardSection";
 import { TarotCard } from "./DATA";
 import { Button } from "./components/shared/Button";
 import { fetchTarotResponse } from "./utils/dataFetching";
 import StarRating from "./components/shared/StarRating";
 import Cards from "./components/Cards";
+
 // Initialize OpenAI
 
 const drawStacks = [
@@ -45,7 +50,12 @@ const App = () => {
   const [moneyResponse, setMoneyResponse] = useState();
   const [loveResponse, setLoveResponse] = useState();
   const [workResponse, setworkResponse] = useState();
-  const [loading, setLoading] = useState(false); // Loading state
+  // const [loading, setLoading] = useState(false); // Loading state
+  const [loadingStates, setLoadingStates] = useState({
+    money: false,
+    love: false,
+    work: false,
+  });
   const [stackId, setStackId] = useState(0);
   const [sent, setSent] = useState(false);
 
@@ -119,17 +129,19 @@ const App = () => {
   const handleSendRequest2 = async (topic) => {
     const lowerTopic = topic.toLowerCase();
     console.log(lowerTopic);
+
+    setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
+
+    console.log(`Fetching response for ${lowerTopic}...`);
+
     switch (lowerTopic) {
       case "money":
-        setLoading(true);
         console.log("munnuy");
         break;
       case "love":
-        setLoading(true);
         console.log("luv");
         break;
       case "work":
-        setLoading(true);
         console.log("werks");
         break;
       default:
@@ -149,22 +161,24 @@ const App = () => {
 
     console.log(userPrompt);
 
-    switch (lowerTopic) {
-      case "money":
-        setMoneyResponse(MONEY_RES);
-        break;
-      case "love":
-        setLoveResponse(LOVE_RES);
-        break;
-      case "work":
-        setworkResponse(WORK_RES);
-        break;
-    }
-    setLoading(false);
+    setTimeout(() => {
+      switch (lowerTopic) {
+        case "money":
+          setMoneyResponse(MONEY_RES);
+          break;
+        case "love":
+          setLoveResponse(LOVE_RES);
+          break;
+        case "work":
+          setworkResponse(WORK_RES);
+          break;
+      }
+      setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false }));
+    }, 2000);
   };
 
   return (
-    <div className="p-5 font-prompt  max-w-screen-sm mx-auto">
+    <div className="p-5 font-prompt  max-w-screen-sm mx-auto ">
       <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
       <form className="space-y-4 rounded-3xl bg-fuchsia-100/50 p-8">
         <SexInput value={form.sex} onChange={handleChange} />
@@ -180,7 +194,7 @@ const App = () => {
           onChange={handleChange}
         />
         <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button loading={loading} handleClick={setTrue} message="จั่วไพ่ 🫳" />
+        <Button handleClick={setTrue} message="จั่วไพ่ 🫳" />
       </form>
 
       {sent && (
@@ -207,9 +221,14 @@ const App = () => {
                 >
                   ดูความหมาย 👁️
                 </button>
-                {!loading && responseToShow && (
+                {loadingStates[topic.toLowerCase()] && <p>กำลังโหลด...</p>}
+                {!loadingStates[topic.toLowerCase()] && responseToShow && (
                   <Summary response={responseToShow} />
                 )}
+                {/* <Summary
+                  response={responseToShow}
+                  loading={loadingStates[topic.toLowerCase()]}
+                /> */}
               </div>
             );
           })}
@@ -221,13 +240,30 @@ const App = () => {
 
 export default App;
 
-const Summary = ({ response, loading }) => {
+const Summary = ({ response }) => {
   return (
     <>
-      {loading && <p> กำลังทำนาย </p>}
-      <div className="flex flex-col items-center mt-4">
+      <div className="flex flex-col items-center mt-4 space-y-2">
         <p>{response.topic}</p>
         <StarRating score={response.score} />
+        <div className="flex flex-col items-center space-y-2">
+          {response.cards.map((card, ind) => (
+            <>
+              <div className="flex flex-col items-center  " key={ind}>
+                <p className="text-sm">{getNameString(card)}</p>
+                <p className="text-[12px]">{card.meaning}</p>
+              </div>
+            </>
+          ))}
+        </div>
+        <p className="pt-2  font-bold">ข้อควรระวัง</p>
+        <div className="text-sm text-center leading-relaxed">
+          {response.challenges}
+        </div>
+        <p className="pt-2 font-bold">ข้อควรระวัง</p>
+        <div className="text-sm text-center leading-relaxed">
+          {response.suggestions}
+        </div>
       </div>
     </>
   );
