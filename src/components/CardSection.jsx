@@ -90,7 +90,9 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor, sent }) => {
         return (
           <div
             key={index}
-            className={`absolute w-14 h-20 sm:w-20 sm:h-28 bg-white shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-110 
+            className={`hover:cursor-pointer ${
+              sent && !display ? " filter grayscale" : ""
+            } absolute w-14 h-20 sm:w-20 sm:h-28 bg-white shadow-lg rounded-lg border border-gray-200 transform transition-all duration-300 hover:scale-110 
             }`}
             style={{
               transform: `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg)`,

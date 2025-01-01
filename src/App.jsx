@@ -53,14 +53,14 @@ const App = () => {
   };
 
   const handleResetDraw = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to results section
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
       setSent(false);
       setMoneyResponse();
       setLoveResponse();
       setworkResponse();
       drawStacks = TarotCard.getDrawStacks();
-    }, 1000);
+    }, 2000);
   };
 
   const handleChange = (e) => {
@@ -148,6 +148,7 @@ const App = () => {
             message="จั่วไพ่ 🫳"
             disabled={!isFormValid}
             sent={sent}
+            handleResetDraw={handleResetDraw}
           />
         </form>
 
@@ -197,7 +198,7 @@ const App = () => {
           </div>
         )}
       </div>
-      <ResetButton sent={sent} handleResetDraw={handleResetDraw} />
+      {/* <ResetButton sent={sent} handleResetDraw={handleResetDraw} /> */}
     </div>
   );
 };
