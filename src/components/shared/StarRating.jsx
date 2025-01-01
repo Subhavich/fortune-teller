@@ -7,7 +7,7 @@ const StarRating = ({ score }) => {
   const hasHalfStar = score % 1 >= 0.5; // Check for a half star
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="pb-1 flex items-center space-x-1">
       {/* Render full stars */}
       {[...Array(fullStars)].map((_, index) => (
         <FaStar key={`full-${index}`} className=" text-fuchsia-500" />

@@ -3,7 +3,7 @@ import { FaChevronDown } from "react-icons/fa";
 const JobStatusInput = ({ value, onChange }) => {
   return (
     <label className="block">
-      <span className="block font-semibold mb-2">งานและอาชีพ</span>
+      <span className="block font-semibold pt-1 my-2">งานและอาชีพ</span>
       <div className="relative text-gray-600">
         <select
           name="jobStatus"

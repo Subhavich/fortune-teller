@@ -131,19 +131,22 @@ const App = () => {
        p-8"
           ref={formRef}
         >
-          <SexInput value={form.sex} onChange={handleChange} />
-          <DOBInput
-            date={form.date}
-            month={form.month}
-            year={form.year}
-            onChange={handleChange}
-          />
-          <JobStatusInput value={form.jobStatus} onChange={handleChange} />
-          <RelationshipInput
-            value={form.relationshipStatus}
-            onChange={handleChange}
-          />
+          <fieldset disabled={sent} className={`${sent ? "opacity-50" : ""}`}>
+            <SexInput value={form.sex} onChange={handleChange} />
+            <DOBInput
+              date={form.date}
+              month={form.month}
+              year={form.year}
+              onChange={handleChange}
+            />
+            <JobStatusInput value={form.jobStatus} onChange={handleChange} />
+            <RelationshipInput
+              value={form.relationshipStatus}
+              onChange={handleChange}
+            />
+          </fieldset>
           <CardSection sent={sent} stackId={stackId} setStackId={setStackId} />
+
           <Button
             handleClick={handleDraw}
             message="จั่วไพ่ 🫳"

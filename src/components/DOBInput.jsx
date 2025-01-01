@@ -25,7 +25,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
 
   return (
     <div className="block">
-      <span className="block font-semibold mb-2 ">วันเกิด</span>
+      <span className="block font-semibold pt-1 my-2">วันเกิด</span>
       <div className="flex space-x-2 x">
         {/* Date Select */}
         <div className="relative w-1/3 text-gray-600">

@@ -3,7 +3,7 @@ import { FaChevronDown } from "react-icons/fa";
 const SexInput = ({ value, onChange }) => {
   return (
     <label className="block">
-      <span className="block font-semibold mb-2">เพศ</span>
+      <span className="block font-semibold pt-1 my-2">เพศ</span>
       <div className="relative text-gray-600">
         <select
           name="sex"
