@@ -13,21 +13,31 @@ const THAI_MONTHS = [
   "ธ.ค.",
 ];
 
+const getDaysInMonth = (month, year) => {
+  if (!month || !year) return 31; // Default to 31 days
+  return new Date(year, month, 0).getDate(); // Get the last day of the month
+};
+
 const DOBInput = ({ date, month, year, onChange }) => {
+  const daysInMonth = getDaysInMonth(Number(month), Number(year));
+
   return (
     <div className="block">
       <span className="block font-semibold mb-2">วันเกิด</span>
       <div className="flex space-x-2">
-        <input
-          type="number"
+        <select
           name="date"
-          placeholder="วันที่"
           value={date}
           onChange={onChange}
           className="w-1/3 p-3 border rounded-2xl"
-          max={31}
-          min={1}
-        />
+        >
+          <option value="">วันที่</option>
+          {Array.from({ length: daysInMonth }).map((_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {i + 1}
+            </option>
+          ))}
+        </select>
         <select
           name="month"
           value={month}
@@ -50,8 +60,8 @@ const DOBInput = ({ date, month, year, onChange }) => {
         >
           <option value="">ปี</option>
           {Array.from({ length: 100 }).map((_, i) => (
-            <option key={i} value={2024 - Number(i)}>
-              {2024 - Number(i)}
+            <option key={i} value={2008 - Number(i)}>
+              {2008 - Number(i)}
             </option>
           ))}
         </select>
