@@ -3,7 +3,10 @@ const Cards = ({ array }) => {
   return (
     <div className="grid grid-cols-12">
       {array.map((card, ind) => (
-        <div className="col-span-4  flex flex-col space-y-2 items-center">
+        <div
+          key={ind}
+          className="col-span-4  flex flex-col space-y-2 items-center"
+        >
           <div
             className={`w-20 h-32 bg-contain bg-center rounded-sm border border-gray-500 shadow-inner filter brightness-90 contrast-125 ${
               card.reversed ? " rotate-180" : ""

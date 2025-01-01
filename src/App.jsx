@@ -99,14 +99,14 @@ const App = () => {
       drawStacks[stackId]
     )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
 
-    console.log(userPrompt);
+    // console.log(userPrompt);
 
     const response = await fetchTarotResponse({
       systemPrompt: TAROT_PROMPT_SYSTEM,
       userPrompt,
     });
     const result = response.reading[0];
-    console.log("HIT", response);
+    // console.log("HIT", response);
 
     switch (lowerTopic) {
       case "money":
