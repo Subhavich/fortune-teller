@@ -33,7 +33,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
             name="date"
             value={date}
             onChange={onChange}
-            className="w-full p-3 border rounded-2xl appearance-none pr-8"
+            className="w-full p-3 border rounded-2xl appearance-none pr-8 bg-white"
           >
             <option value="">วันที่</option>
             {Array.from({ length: daysInMonth }).map((_, i) => (
@@ -51,7 +51,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
             name="month"
             value={month}
             onChange={onChange}
-            className="w-full p-3 border rounded-2xl appearance-none pr-8"
+            className="w-full p-3 border rounded-2xl appearance-none pr-8 bg-white"
           >
             <option value="">เดือน</option>
             {THAI_MONTHS.map((monthName, index) => (
@@ -69,7 +69,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
             name="year"
             value={year}
             onChange={onChange}
-            className="w-full p-3 border rounded-2xl appearance-none pr-8"
+            className="w-full p-3 border rounded-2xl appearance-none pr-8 bg-white"
           >
             <option value="">ปี</option>
             {Array.from({ length: 100 }).map((_, i) => (
