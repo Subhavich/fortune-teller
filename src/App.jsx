@@ -57,6 +57,7 @@ const App = () => {
 
   const isFormValid = Object.values(form).every((field) => field.trim() !== "");
   const resultsRef = useRef(null);
+  const formRef = useRef();
 
   const setTrue = (e) => {
     e.preventDefault();
@@ -67,24 +68,30 @@ const App = () => {
   };
 
   const handleResetDraw = () => {
-    setSent(false);
-    drawStacks = [
-      {
-        money: TarotCard.getNormalDraw(),
-        love: TarotCard.getNormalDraw(),
-        work: TarotCard.getNormalDraw(),
-      },
-      {
-        money: TarotCard.getReversedDraw(),
-        love: TarotCard.getReversedDraw(),
-        work: TarotCard.getReversedDraw(),
-      },
-      {
-        money: TarotCard.getMajorArcanaDraw(),
-        love: TarotCard.getMajorArcanaDraw(),
-        work: TarotCard.getMajorArcanaDraw(),
-      },
-    ];
+    formRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to results section
+    setTimeout(() => {
+      setSent(false);
+      setMoneyResponse();
+      setLoveResponse();
+      setworkResponse();
+      drawStacks = [
+        {
+          money: TarotCard.getNormalDraw(),
+          love: TarotCard.getNormalDraw(),
+          work: TarotCard.getNormalDraw(),
+        },
+        {
+          money: TarotCard.getReversedDraw(),
+          love: TarotCard.getReversedDraw(),
+          work: TarotCard.getReversedDraw(),
+        },
+        {
+          money: TarotCard.getMajorArcanaDraw(),
+          love: TarotCard.getMajorArcanaDraw(),
+          work: TarotCard.getMajorArcanaDraw(),
+        },
+      ];
+    }, 1000);
   };
 
   const handleChange = (e) => {
@@ -152,6 +159,7 @@ const App = () => {
         <form
           className="space-y-4 rounded-3xl bg-pink-200/75
        p-8"
+          ref={formRef}
         >
           <SexInput value={form.sex} onChange={handleChange} />
           <DOBInput
@@ -220,8 +228,24 @@ const App = () => {
           </div>
         )}
       </div>
+      <ResetButton sent={sent} handleResetDraw={handleResetDraw} />
     </div>
   );
 };
 
 export default App;
+
+export const ResetButton = ({ sent, handleResetDraw }) => {
+  return (
+    <>
+      {sent && (
+        <button
+          onClick={handleResetDraw}
+          className="block mx-auto animate-pulse w-32 h-16 rounded-t-xl bg-gradient-to-br from-blue-200 via-pink-300 to-purple-400 shadow-xl hover:shadow-2xl transition-all duration-300 text-white font-bold text-sm"
+        >
+          จั่วใหม่
+        </button>
+      )}
+    </>
+  );
+};
