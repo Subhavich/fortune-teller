@@ -225,10 +225,6 @@ const App = () => {
                 {!loadingStates[topic.toLowerCase()] && responseToShow && (
                   <Summary response={responseToShow} />
                 )}
-                {/* <Summary
-                  response={responseToShow}
-                  loading={loadingStates[topic.toLowerCase()]}
-                /> */}
               </div>
             );
           })}
@@ -268,32 +264,3 @@ const Summary = ({ response }) => {
     </>
   );
 };
-
-{
-  /* {response && (
-        <div className="mt-5 p-5 bg-gray-100 rounded-md shadow-md">
-          <h3 className="text-lg font-semibold">ผลการทำนาย:</h3>
-          {response.reading.map((topic) => (
-            <div key={topic.topic}>
-              <p>
-                <b>
-                  {topic.topic} คะแนน {topic.score}/5
-                </b>
-              </p>
-              <p>
-                <b>สิ่งที่ควรระวัง : </b> {topic.challenges}
-              </p>
-              <p>
-                <b>คำแนะนำ : </b> {topic.suggestions}
-              </p>
-              {topic.cards.map((card) => (
-                <>
-                  <b>{card.name}</b>
-                  <p>{card.meaning}</p>
-                </>
-              ))}
-            </div>
-          ))}
-        </div>
-      )} */
-}
