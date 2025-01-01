@@ -1,9 +1,9 @@
-export const Button = ({ loading, handleClick, message, disabled }) => {
+export const Button = ({ handleClick, message, disabled }) => {
   return (
     <button
       onClick={handleClick}
       type="submit"
-      className={`w-full p-3  rounded-2xl text-white ${
+      className={`w-full p-3 rounded-2xl text-white ${
         disabled
           ? "bg-zinc-300 cursor-not-allowed "
           : "bg-fuchsia-400 hover:bg-fushcia-500 animate-pulse"

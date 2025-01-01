@@ -17,8 +17,9 @@ const DECK_DETAILS = [
   },
 ];
 
-const CardSection = ({ stackId, setStackId }) => {
-  const handleStackClick = (no) => {
+const CardSection = ({ stackId, setStackId, sent }) => {
+  const handleStackClick = (no, sent) => {
+    if (sent) return;
     setStackId(no);
   };
 
@@ -27,6 +28,7 @@ const CardSection = ({ stackId, setStackId }) => {
   useEffect(() => {
     setDeckInfo(DECK_DETAILS[stackId]);
   }, [stackId]);
+
   return (
     <>
       <div className=" leading-relaxed tracking-wide flex flex-col items-center text-center space-y-4">
@@ -42,6 +44,7 @@ const CardSection = ({ stackId, setStackId }) => {
             handleClick={handleStackClick}
             bgUrl={card0}
             shadowColor="0 0 10px 5px rgba(255,182,193,0.4)"
+            sent={sent}
           />
         </div>
         <div className="relative col-span-4">
@@ -51,6 +54,7 @@ const CardSection = ({ stackId, setStackId }) => {
             handleClick={handleStackClick}
             bgUrl={card1}
             shadowColor="0 0 10px 5px rgba(173,216,230,0.4)"
+            sent={sent}
           />
         </div>
         <div className="relative col-span-4">
@@ -60,6 +64,7 @@ const CardSection = ({ stackId, setStackId }) => {
             handleClick={handleStackClick}
             bgUrl={card2}
             shadowColor="0 0 10px 5px rgba(255,255,160,0.4)"
+            sent={sent}
           />
         </div>
       </div>
@@ -68,7 +73,7 @@ const CardSection = ({ stackId, setStackId }) => {
 };
 export default CardSection;
 
-const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
+const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor, sent }) => {
   const display = id === stackId;
 
   return (
@@ -96,7 +101,9 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
               backgroundRepeat: "no-repeat",
               boxShadow: display ? shadowColor : "none", // Proper box-shadow applied here
             }}
-            onClick={() => handleClick(id)}
+            onClick={() => {
+              if (!sent) handleClick(id);
+            }}
           ></div>
         );
       })}

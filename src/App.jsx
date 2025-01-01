@@ -94,19 +94,18 @@ const App = () => {
 
   const handleSendRequest = async (topic) => {
     const lowerTopic = topic.toLowerCase();
-    console.log(lowerTopic);
+    setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
+    console.log(`Fetching response for ${lowerTopic}...`);
+
     switch (lowerTopic) {
       case "money":
-        setLoading(true);
-        console.log("munnuy");
+        console.log("money");
         break;
       case "love":
-        setLoading(true);
-        console.log("luv");
+        console.log("love");
         break;
       case "work":
-        setLoading(true);
-        console.log("werks");
+        console.log("work");
         break;
       default:
         console.log("Invalid topic");
@@ -125,7 +124,6 @@ const App = () => {
 
     console.log(userPrompt);
 
-    return;
     const response = await fetchTarotResponse({
       systemPrompt: TAROT_PROMPT_SYSTEM,
       userPrompt,
@@ -142,56 +140,6 @@ const App = () => {
         setworkResponse(response);
         break;
     }
-  };
-
-  const handleSendRequest2 = async (topic) => {
-    const lowerTopic = topic.toLowerCase();
-
-    setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
-
-    console.log(`Fetching response for ${lowerTopic}...`);
-
-    switch (lowerTopic) {
-      case "money":
-        console.log("munnuy");
-        break;
-      case "love":
-        console.log("luv");
-        break;
-      case "work":
-        console.log("werks");
-        break;
-      default:
-        console.log("Invalid topic");
-        return; // Exit the function for invalid topics
-    }
-
-    const userPrompt = `${TAROT_PROMPT_USER} ${deriveExtension(
-      form.date,
-      form.month,
-      form.year,
-      form.sex,
-      form.jobStatus,
-      form.relationshipStatus,
-      drawStacks[stackId]
-    )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
-
-    console.log(userPrompt);
-
-    setTimeout(() => {
-      switch (lowerTopic) {
-        case "money":
-          setMoneyResponse(MONEY_RES);
-          break;
-        case "love":
-          setLoveResponse(LOVE_RES);
-          break;
-        case "work":
-          setworkResponse(WORK_RES);
-          break;
-      }
-      setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false }));
-    }, 2000);
   };
 
   return (
@@ -214,11 +162,12 @@ const App = () => {
             value={form.relationshipStatus}
             onChange={handleChange}
           />
-          <CardSection stackId={stackId} setStackId={setStackId} />
+          <CardSection sent={sent} stackId={stackId} setStackId={setStackId} />
           <Button
             handleClick={setTrue}
             message="จั่วไพ่ 🫳"
             disabled={!isFormValid}
+            sent={sent}
           />
         </form>
 
@@ -254,7 +203,7 @@ const App = () => {
                   <Cards array={array} />
                   <button
                     className="mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl"
-                    onClick={() => handleSendRequest2(topic)}
+                    onClick={() => handleSendRequest(topic)}
                   >
                     ดูความหมาย 👁️
                   </button>
