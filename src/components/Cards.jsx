@@ -10,7 +10,7 @@ const Cards = ({ array }) => {
               backgroundImage: `url(https://sacred-texts.com/tarot/pkt/img/${card.name_short}.jpg)`,
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent"></div>
+            <div className="absolute inset-0"></div>
           </div>
           <p className="max-w-full px-2 font-mono text-xs wrap  text-center">
             {getNameString(card)}
