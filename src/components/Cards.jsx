@@ -5,7 +5,9 @@ const Cards = ({ array }) => {
       {array.map((card, ind) => (
         <div className="col-span-4  flex flex-col space-y-2 items-center">
           <div
-            className="w-20 h-32 bg-contain bg-center rounded-sm border border-gray-500 shadow-inner filter   brightness-90 contrast-125"
+            className={`w-20 h-32 bg-contain bg-center rounded-sm border border-gray-500 shadow-inner filter brightness-90 contrast-125 ${
+              card.reversed ? " rotate-180" : ""
+            }`}
             style={{
               backgroundImage: `url(https://sacred-texts.com/tarot/pkt/img/${card.name_short}.jpg)`,
             }}

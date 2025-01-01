@@ -202,28 +202,6 @@ export class TarotCard {
     { name: "King of Swords", name_short: "swki" },
   ];
 
-  // static getThreeCards(allowReversed = false) {
-  //   const shuffledDeck = [...this.TAROTCARDS]; // Create a shallow copy of the cards
-  //   const selectedCards = [];
-
-  //   for (let i = 0; i < 3; i++) {
-  //     const randomIndex = Math.floor(Math.random() * shuffledDeck.length);
-  //     let card = { ...shuffledDeck[randomIndex] }; // Copy the selected card
-
-  //     // If allowReversed is true, randomly set the reversed field
-  //     if (allowReversed) {
-  //       card.reversed = Math.random() > 0.5;
-  //     } else {
-  //       card.reversed = false; // Explicitly set to false if not reversed
-  //     }
-
-  //     selectedCards.push(card);
-  //     shuffledDeck.splice(randomIndex, 1); // Remove the selected card from the copy
-  //   }
-
-  //   return selectedCards;
-  // }
-
   static getNormalDraw() {
     const shuffledDeck = [...this.TAROTCARDS];
     const selectedCards = [];
