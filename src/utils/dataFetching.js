@@ -18,7 +18,7 @@ export const fetchTarotResponse = async ({ systemPrompt, userPrompt }) => {
     if (!response.choices[0].message.content) {
       throw new Error("FUCC UP");
     }
-    return sanitizeResponse(response.choices[0].message.content);
+    return sanitizeResponse(response.choices[0].message.content.reading[0]);
   } catch (error) {
     console.log(error);
   }

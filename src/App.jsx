@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FAKE_RESPONSE, TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
+import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
+import { WORK_RES, MONEY_RES, LOVE_RES } from "./utils/fakeResponses";
 import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
@@ -91,6 +92,7 @@ const App = () => {
     )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
 
     console.log(userPrompt);
+
     return;
     const response = await fetchTarotResponse({
       systemPrompt: TAROT_PROMPT_SYSTEM,
@@ -114,11 +116,51 @@ const App = () => {
     setLoading(false);
   };
 
-  const handleFakeSent = (e) => {
-    e.preventDefault();
+  const handleSendRequest2 = async (topic) => {
+    const lowerTopic = topic.toLowerCase();
+    console.log(lowerTopic);
+    switch (lowerTopic) {
+      case "money":
+        setLoading(true);
+        console.log("munnuy");
+        break;
+      case "love":
+        setLoading(true);
+        console.log("luv");
+        break;
+      case "work":
+        setLoading(true);
+        console.log("werks");
+        break;
+      default:
+        console.log("Invalid topic");
+        return; // Exit the function for invalid topics
+    }
 
-    setSent(true);
-    setResponse(FAKE_RESPONSE.choices[0]);
+    const userPrompt = `${TAROT_PROMPT_USER} ${deriveExtension(
+      form.date,
+      form.month,
+      form.year,
+      form.sex,
+      form.jobStatus,
+      form.relationshipStatus,
+      drawStacks[stackId]
+    )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
+
+    console.log(userPrompt);
+
+    switch (lowerTopic) {
+      case "money":
+        setMoneyResponse(MONEY_RES);
+        break;
+      case "love":
+        setLoveResponse(LOVE_RES);
+        break;
+      case "work":
+        setworkResponse(WORK_RES);
+        break;
+    }
+    setLoading(false);
   };
 
   return (
@@ -138,25 +180,39 @@ const App = () => {
           onChange={handleChange}
         />
         <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button loading={loading} handleClick={setTrue} message={"ดูคำทำนาย"} />
-        <Button loading={loading} handleClick={setTrue} message={"MOCK RES"} />
+        <Button loading={loading} handleClick={setTrue} message="จั่วไพ่ 🫳" />
       </form>
 
       {sent && (
         <div className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6">
-          {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => (
-            <div key={topic}>
-              <b className="mb-4 block text-center">{topic.toUpperCase()}</b>
-              <Cards array={array} />
-              <button
-                className="mt-4 mx-auto block border px-3 py-2 rounded-xl"
-                onClick={() => handleSendRequest(topic)}
-              >
-                เช็คความหมาย
-              </button>
-              {!loading && response && <Summary response={response} />}
-            </div>
-          ))}
+          {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
+            let responseToShow = null;
+
+            // Match topic with the corresponding state
+            if (topic.toLowerCase() === "money") {
+              responseToShow = moneyResponse;
+            } else if (topic.toLowerCase() === "love") {
+              responseToShow = loveResponse;
+            } else if (topic.toLowerCase() === "work") {
+              responseToShow = workResponse;
+            }
+
+            return (
+              <div key={topic}>
+                <b className="mb-4 block text-center">{topic.toUpperCase()}</b>
+                <Cards array={array} />
+                <button
+                  className="mt-4 mx-auto block border px-3 py-2 rounded-xl"
+                  onClick={() => handleSendRequest2(topic)}
+                >
+                  ดูความหมาย 👁️
+                </button>
+                {!loading && responseToShow && (
+                  <Summary response={responseToShow} />
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -166,13 +222,12 @@ const App = () => {
 export default App;
 
 const Summary = ({ response, loading }) => {
-  const result = response.reading[0];
   return (
     <>
       {loading && <p> กำลังทำนาย </p>}
       <div className="flex flex-col items-center mt-4">
-        <p>{result.topic}</p>
-        <StarRating score={result.score} />
+        <p>{response.topic}</p>
+        <StarRating score={response.score} />
       </div>
     </>
   );
