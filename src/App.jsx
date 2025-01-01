@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { sectionVariants } from "./animations/animations";
+import { useState, useRef } from "react";
 import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
 import { WORK_RES, MONEY_RES, LOVE_RES } from "./utils/fakeResponses";
 import SexInput from "./components/SexInput";
@@ -59,7 +61,7 @@ const App = () => {
   const [sent, setSent] = useState(false);
 
   const isFormValid = Object.values(form).every((field) => field.trim() !== "");
-
+  const resultsRef = useRef(null);
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +71,9 @@ const App = () => {
   const setTrue = (e) => {
     e.preventDefault();
     setSent(true);
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to results section
+    }, 100);
   };
 
   const handleSendRequest = async (topic) => {
@@ -199,7 +204,10 @@ const App = () => {
       </form>
 
       {sent && (
-        <div className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6">
+        <div
+          ref={resultsRef}
+          className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6"
+        >
           {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
             let responseToShow = null;
 
@@ -213,7 +221,14 @@ const App = () => {
             }
 
             return (
-              <div key={topic}>
+              <motion.div
+                key={topic}
+                variants={sectionVariants}
+                initial="hidden"
+                animate="visible"
+                custom={ind} // Pass index for delay calculation
+                className="opacity-0"
+              >
                 <b className="mb-4 block text-center">{topic.toUpperCase()}</b>
                 <Cards array={array} />
                 <button
@@ -226,7 +241,7 @@ const App = () => {
                 {!loadingStates[topic.toLowerCase()] && responseToShow && (
                   <Summary response={responseToShow} />
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -239,29 +254,30 @@ export default App;
 
 const Summary = ({ response }) => {
   return (
-    <>
-      <div className="flex flex-col items-center mt-4 space-y-2">
-        <p>{response.topic}</p>
-        <StarRating score={response.score} />
-        <div className="flex flex-col items-center space-y-2">
-          {response.cards.map((card, ind) => (
-            <>
-              <div className="flex flex-col items-center  " key={ind}>
-                <p className="text-sm">{getNameString(card)}</p>
-                <p className="text-[12px]">{card.meaning}</p>
-              </div>
-            </>
-          ))}
-        </div>
-        <p className="pt-2  font-bold">ข้อควรระวัง</p>
-        <div className="text-sm text-center leading-relaxed">
-          {response.challenges}
-        </div>
-        <p className="pt-2 font-bold">ข้อควรระวัง</p>
-        <div className="text-sm text-center leading-relaxed">
-          {response.suggestions}
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center mt-4 space-y-2"
+    >
+      <p>{response.topic}</p>
+      <StarRating score={response.score} />
+      <div className="flex flex-col items-center space-y-2">
+        {response.cards.map((card, ind) => (
+          <div className="flex flex-col items-center" key={ind}>
+            <p className="text-sm">{getNameString(card)}</p>
+            <p className="text-[12px]">{card.meaning}</p>
+          </div>
+        ))}
       </div>
-    </>
+      <p className="pt-2 font-bold">ข้อควรระวัง</p>
+      <div className="text-sm text-center leading-relaxed">
+        {response.challenges}
+      </div>
+      <p className="pt-2 font-bold">ข้อควรระวัง</p>
+      <div className="text-sm text-center leading-relaxed">
+        {response.suggestions}
+      </div>
+    </motion.div>
   );
 };
