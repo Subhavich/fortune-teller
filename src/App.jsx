@@ -195,72 +195,79 @@ const App = () => {
   };
 
   return (
-    <div className="p-5 font-prompt  max-w-screen-sm mx-auto ">
-      <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
-      <form className="space-y-4 rounded-3xl bg-fuchsia-100/50 p-8">
-        <SexInput value={form.sex} onChange={handleChange} />
-        <DOBInput
-          date={form.date}
-          month={form.month}
-          year={form.year}
-          onChange={handleChange}
-        />
-        <JobStatusInput value={form.jobStatus} onChange={handleChange} />
-        <RelationshipInput
-          value={form.relationshipStatus}
-          onChange={handleChange}
-        />
-        <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button
-          handleClick={setTrue}
-          message="จั่วไพ่ 🫳"
-          disabled={!isFormValid}
-        />
-      </form>
-
-      {sent && (
-        <div
-          ref={resultsRef}
-          className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-purple-100/50 p-6"
+    <div className="min-w-full bg-gray-50">
+      <div className="p-5 font-prompt  max-w-screen-sm mx-auto text-gray-800 ">
+        <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
+        <form
+          className="space-y-4 rounded-3xl bg-pink-200/75
+       p-8"
         >
-          {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
-            let responseToShow = null;
+          <SexInput value={form.sex} onChange={handleChange} />
+          <DOBInput
+            date={form.date}
+            month={form.month}
+            year={form.year}
+            onChange={handleChange}
+          />
+          <JobStatusInput value={form.jobStatus} onChange={handleChange} />
+          <RelationshipInput
+            value={form.relationshipStatus}
+            onChange={handleChange}
+          />
+          <CardSection stackId={stackId} setStackId={setStackId} />
+          <Button
+            handleClick={setTrue}
+            message="จั่วไพ่ 🫳"
+            disabled={!isFormValid}
+          />
+        </form>
 
-            // Match topic with the corresponding state
-            if (topic.toLowerCase() === "money") {
-              responseToShow = moneyResponse;
-            } else if (topic.toLowerCase() === "love") {
-              responseToShow = loveResponse;
-            } else if (topic.toLowerCase() === "work") {
-              responseToShow = workResponse;
-            }
+        {sent && (
+          <div
+            ref={resultsRef}
+            className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-indigo-200/75 p-6"
+          >
+            {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
+              let responseToShow = null;
 
-            return (
-              <motion.div
-                key={topic}
-                variants={sectionVariants}
-                initial="hidden"
-                animate="visible"
-                custom={ind} // Pass index for delay calculation
-                className="opacity-0"
-              >
-                <b className="mb-4 block text-center">{topic.toUpperCase()}</b>
-                <Cards array={array} />
-                <button
-                  className="mt-4 mx-auto block border px-3 py-2 rounded-xl"
-                  onClick={() => handleSendRequest2(topic)}
+              // Match topic with the corresponding state
+              if (topic.toLowerCase() === "money") {
+                responseToShow = moneyResponse;
+              } else if (topic.toLowerCase() === "love") {
+                responseToShow = loveResponse;
+              } else if (topic.toLowerCase() === "work") {
+                responseToShow = workResponse;
+              }
+
+              return (
+                <motion.div
+                  key={topic}
+                  variants={sectionVariants}
+                  initial="hidden"
+                  animate="visible"
+                  custom={ind} // Pass index for delay calculation
+                  className="opacity-0"
                 >
-                  ดูความหมาย 👁️
-                </button>
-                {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
-                {!loadingStates[topic.toLowerCase()] && responseToShow && (
-                  <Summary response={responseToShow} />
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
-      )}
+                  <b className="mb-4 block text-center">
+                    {topic.toUpperCase()}
+                  </b>
+                  <Cards array={array} />
+                  <button
+                    className="mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl"
+                    onClick={() => handleSendRequest2(topic)}
+                  >
+                    ดูความหมาย 👁️
+                  </button>
+                  {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
+                  {!loadingStates[topic.toLowerCase()] && responseToShow && (
+                    <Summary response={responseToShow} />
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

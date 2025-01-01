@@ -4,7 +4,7 @@ const SexInput = ({ value, onChange }) => {
   return (
     <label className="block">
       <span className="block font-semibold mb-2">เพศ</span>
-      <div className="relative">
+      <div className="relative text-gray-600">
         <select
           name="sex"
           value={value}

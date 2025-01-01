@@ -29,10 +29,10 @@ const CardSection = ({ stackId, setStackId }) => {
   }, [stackId]);
   return (
     <>
-      <div className=" leading-relaxed tracking-wide flex flex-col items-center text-center space-y-2">
-        <div className="mt-4 font-bold">เลือกกองไพ่</div>
-        <p className="text-lg font-light">{deckInfo.title}</p>
-        <p>{deckInfo.desc}</p>
+      <div className=" leading-relaxed tracking-wide flex flex-col items-center text-center space-y-4">
+        <div className="mt-4 font-bold text-gray-800">เลือกกองไพ่</div>
+        <p className="text-lg font-light  text-gray-800">{deckInfo.title}</p>
+        <p className="text-gray-800 leading-loose">{deckInfo.desc}</p>
       </div>
       <div className="mt-4 grid grid-cols-12 sm:min-h-80 min-h-40 ">
         <div className="relative col-span-4">
@@ -74,7 +74,7 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
   return (
     <div
       className={`${
-        display ? " -rotate-12 transition-transform" : null
+        display ? " -rotate-12 transition-transform scale-125" : null
       } relative translate-y-4 min-w-full min-h-full flex justify-center items-center`}
     >
       {Array.from({ length: 9 }).map((_, index) => {

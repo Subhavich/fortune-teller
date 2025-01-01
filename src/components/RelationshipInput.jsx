@@ -4,7 +4,7 @@ const RelationshipInput = ({ value, onChange }) => {
   return (
     <label className="block">
       <span className="block font-semibold mb-2">ชีวิตรัก</span>
-      <div className="relative">
+      <div className="relative text-gray-600">
         <select
           name="relationshipStatus"
           value={value}

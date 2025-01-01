@@ -25,15 +25,15 @@ const DOBInput = ({ date, month, year, onChange }) => {
 
   return (
     <div className="block">
-      <span className="block font-semibold mb-2">วันเกิด</span>
-      <div className="flex space-x-2">
+      <span className="block font-semibold mb-2 ">วันเกิด</span>
+      <div className="flex space-x-2 x">
         {/* Date Select */}
-        <div className="relative w-1/3">
+        <div className="relative w-1/3 text-gray-600">
           <select
             name="date"
             value={date}
             onChange={onChange}
-            className="w-full p-3 border rounded-2xl appearance-none pr-8 bg-white"
+            className="w-full p-3 border rounded-2xl appearance-none pr-8  bg-white"
           >
             <option value="">วันที่</option>
             {Array.from({ length: daysInMonth }).map((_, i) => (
@@ -42,11 +42,11 @@ const DOBInput = ({ date, month, year, onChange }) => {
               </option>
             ))}
           </select>
-          <FaChevronDown className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
+          <FaChevronDown className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600" />
         </div>
 
         {/* Month Select */}
-        <div className="relative w-1/3">
+        <div className="relative w-1/3 text-gray-600">
           <select
             name="month"
             value={month}
@@ -64,7 +64,7 @@ const DOBInput = ({ date, month, year, onChange }) => {
         </div>
 
         {/* Year Select */}
-        <div className="relative w-1/3">
+        <div className="relative w-1/3 text-gray-600">
           <select
             name="year"
             value={year}

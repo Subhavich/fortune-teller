@@ -4,12 +4,12 @@ const JobStatusInput = ({ value, onChange }) => {
   return (
     <label className="block">
       <span className="block font-semibold mb-2">งานและอาชีพ</span>
-      <div className="relative">
+      <div className="relative text-gray-600">
         <select
           name="jobStatus"
           value={value}
           onChange={onChange}
-          className="w-full p-3 border rounded-2xl appearance-none pr-8 bg-white"
+          className="w-full p-3 border rounded-2xl appearance-none pr-8  bg-white"
         >
           <option value="">เลือกสถานะการงาน</option>
           <option value="พนักงานประจำ">พนักงานประจำ</option>
