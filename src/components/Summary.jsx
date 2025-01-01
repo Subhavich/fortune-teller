@@ -24,7 +24,7 @@ const Summary = ({ response }) => {
       <div className="text-sm text-center leading-relaxed">
         {response.challenges}
       </div>
-      <p className="pt-2 font-bold">ข้อควรระวัง</p>
+      <p className="pt-2 font-bold">คำแนะนำ</p>
       <div className="text-sm text-center leading-relaxed">
         {response.suggestions}
       </div>

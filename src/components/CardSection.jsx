@@ -1,41 +1,69 @@
-import card1 from "../assets/Tarot1.png";
+import card0 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
-import card3 from "../assets/Tarot3.png";
+import card1 from "../assets/Tarot3.png";
 import { useEffect, useState } from "react";
+const DECK_DETAILS = [
+  {
+    title: "Pendragon Rules",
+    desc: "Normal Draw ใช้ไพ่ทั้งหมด 78 ใบในการอ่านไพ่ โดยความหมายของไพ่จะปรากฏตรงไปตรงมาและไม่ซับซ้อน การ์ดจะไม่มีการกลับด้าน ทำให้การตีความง่ายและตรงไปตรงมา",
+  },
+  {
+    title: "Morgana Rules",
+    desc: "Reversed Draw อนุญาตให้มีการกลับด้านของไพ่ ความหมายของไพ่ในตำแหน่งกลับด้านจะแตกต่างจากตำแหน่งปกติ แสดงถึงความท้าทาย ความจริงที่ซ่อนอยู่ หรือมุมมองที่แตกต่าง",
+  },
+  {
+    title: "Merlin Rules",
+    desc: "Major-Only Draw ใช้เฉพาะไพ่ Major Arcana ทั้งหมด 22 ใบ การ์ดเหล่านี้มีน้ำหนักในเชิงสัญลักษณ์สูง มุ่งเน้นเหตุการณ์สำคัญในชีวิต การเปิดเผยเชิงลึก และอิทธิพลจากพลังสวรรค์",
+  },
+];
+
 const CardSection = ({ stackId, setStackId }) => {
   const handleStackClick = (no) => {
     setStackId(no);
   };
+
+  const [deckInfo, setDeckInfo] = useState(DECK_DETAILS[stackId]);
+
+  useEffect(() => {
+    setDeckInfo(DECK_DETAILS[stackId]);
+  }, [stackId]);
   return (
-    <div className="mt-4 grid grid-cols-12 sm:min-h-80 min-h-40 ">
-      <div className="relative col-span-4">
-        <CardStack
-          id={0}
-          stackId={stackId}
-          handleClick={handleStackClick}
-          bgUrl={card1}
-          shadowColor="0 0 10px 5px rgba(255,182,193,0.4)"
-        />
+    <>
+      <div className=" leading-relaxed tracking-wide flex flex-col items-center text-center space-y-2">
+        <div className="mt-4 font-bold">เลือกกองไพ่</div>
+        <p className="text-lg font-light">{deckInfo.title}</p>
+        <p>{deckInfo.desc}</p>
       </div>
-      <div className="relative col-span-4">
-        <CardStack
-          id={1}
-          stackId={stackId}
-          handleClick={handleStackClick}
-          bgUrl={card2}
-          shadowColor="0 0 10px 5px rgba(255,255,160,0.4)"
-        />
+      <div className="mt-4 grid grid-cols-12 sm:min-h-80 min-h-40 ">
+        <div className="relative col-span-4">
+          <CardStack
+            id={0}
+            stackId={stackId}
+            handleClick={handleStackClick}
+            bgUrl={card0}
+            shadowColor="0 0 10px 5px rgba(255,182,193,0.4)"
+          />
+        </div>
+        <div className="relative col-span-4">
+          <CardStack
+            id={1}
+            stackId={stackId}
+            handleClick={handleStackClick}
+            bgUrl={card1}
+            shadowColor="0 0 10px 5px rgba(173,216,230,0.4)"
+          />
+        </div>
+        <div className="relative col-span-4">
+          <CardStack
+            id={2}
+            stackId={stackId}
+            handleClick={handleStackClick}
+            bgUrl={card2}
+            shadowColor="0 0 10px 5px rgba(255,255,160,0.4)"
+          />
+        </div>
       </div>
-      <div className="relative col-span-4">
-        <CardStack
-          id={2}
-          stackId={stackId}
-          handleClick={handleStackClick}
-          bgUrl={card3}
-          shadowColor="0 0 10px 5px rgba(173,216,230,0.4)"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 export default CardSection;
