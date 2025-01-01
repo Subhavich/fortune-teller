@@ -7,22 +7,17 @@ import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
-import {
-  deriveExtension,
-  deriveTopicString,
-  getNameString,
-} from "./utils/prompts";
+import { deriveExtension, deriveTopicString } from "./utils/prompts";
 import CardSection from "./components/CardSection";
 import { TarotCard } from "./DATA";
 import { Button } from "./components/shared/Button";
 import { fetchTarotResponse } from "./utils/dataFetching";
-import StarRating from "./components/shared/StarRating";
+
 import Cards from "./components/Cards";
 import AlternatingLoader from "./components/shared/Loader";
+import Summary from "./components/Summary";
 
-// Initialize OpenAI
-
-const drawStacks = [
+let drawStacks = [
   {
     money: TarotCard.getNormalDraw(),
     love: TarotCard.getNormalDraw(),
@@ -52,7 +47,6 @@ const App = () => {
   const [moneyResponse, setMoneyResponse] = useState();
   const [loveResponse, setLoveResponse] = useState();
   const [workResponse, setworkResponse] = useState();
-  // const [loading, setLoading] = useState(false); // Loading state
   const [loadingStates, setLoadingStates] = useState({
     money: false,
     love: false,
@@ -63,11 +57,6 @@ const App = () => {
 
   const isFormValid = Object.values(form).every((field) => field.trim() !== "");
   const resultsRef = useRef(null);
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
 
   const setTrue = (e) => {
     e.preventDefault();
@@ -75,6 +64,32 @@ const App = () => {
     setTimeout(() => {
       resultsRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to results section
     }, 100);
+  };
+
+  const handleResetDraw = () => {
+    setSent(false);
+    drawStacks = [
+      {
+        money: TarotCard.getNormalDraw(),
+        love: TarotCard.getNormalDraw(),
+        work: TarotCard.getNormalDraw(),
+      },
+      {
+        money: TarotCard.getReversedDraw(),
+        love: TarotCard.getReversedDraw(),
+        work: TarotCard.getReversedDraw(),
+      },
+      {
+        money: TarotCard.getMajorArcanaDraw(),
+        love: TarotCard.getMajorArcanaDraw(),
+        work: TarotCard.getMajorArcanaDraw(),
+      },
+    ];
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   const handleSendRequest = async (topic) => {
@@ -251,33 +266,3 @@ const App = () => {
 };
 
 export default App;
-
-const Summary = ({ response }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="flex flex-col items-center mt-4 space-y-2"
-    >
-      <p>{response.topic}</p>
-      <StarRating score={response.score} />
-      <div className="flex flex-col items-center space-y-2">
-        {response.cards.map((card, ind) => (
-          <div className="flex flex-col items-center" key={ind}>
-            <p className="text-sm">{getNameString(card)}</p>
-            <p className="text-[12px]">{card.meaning}</p>
-          </div>
-        ))}
-      </div>
-      <p className="pt-2 font-bold">ข้อควรระวัง</p>
-      <div className="text-sm text-center leading-relaxed">
-        {response.challenges}
-      </div>
-      <p className="pt-2 font-bold">ข้อควรระวัง</p>
-      <div className="text-sm text-center leading-relaxed">
-        {response.suggestions}
-      </div>
-    </motion.div>
-  );
-};
