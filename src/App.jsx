@@ -46,7 +46,6 @@ const App = () => {
     jobStatus: "",
     relationshipStatus: "",
   }); // Store form state
-  const [response, setResponse] = useState(""); // Store AI response
   const [moneyResponse, setMoneyResponse] = useState();
   const [loveResponse, setLoveResponse] = useState();
   const [workResponse, setworkResponse] = useState();
@@ -58,6 +57,8 @@ const App = () => {
   });
   const [stackId, setStackId] = useState(0);
   const [sent, setSent] = useState(false);
+
+  const isFormValid = Object.values(form).every((field) => field.trim() !== "");
 
   // Handle input changes
   const handleChange = (e) => {
@@ -120,10 +121,6 @@ const App = () => {
         setworkResponse(response);
         break;
     }
-
-    // console.log(response.choices[0]);
-    setResponse(response);
-    setLoading(false);
   };
 
   const handleSendRequest2 = async (topic) => {
@@ -194,7 +191,11 @@ const App = () => {
           onChange={handleChange}
         />
         <CardSection stackId={stackId} setStackId={setStackId} />
-        <Button handleClick={setTrue} message="จั่วไพ่ 🫳" />
+        <Button
+          handleClick={setTrue}
+          message="จั่วไพ่ 🫳"
+          disabled={!isFormValid}
+        />
       </form>
 
       {sent && (
