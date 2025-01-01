@@ -1,39 +1,24 @@
 import { motion } from "framer-motion";
 import { sectionVariants } from "./animations/animations";
 import { useState, useRef } from "react";
+
 import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
-import { WORK_RES, MONEY_RES, LOVE_RES } from "./utils/fakeResponses";
+import { deriveExtension, deriveTopicString } from "./utils/prompts";
+import { TarotCard } from "./DATA";
+import { fetchTarotResponse } from "./utils/dataFetching";
+
 import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
 import JobStatusInput from "./components/JobInput";
-import { deriveExtension, deriveTopicString } from "./utils/prompts";
 import CardSection from "./components/CardSection";
-import { TarotCard } from "./DATA";
 import { Button } from "./components/shared/Button";
-import { fetchTarotResponse } from "./utils/dataFetching";
-
 import Cards from "./components/Cards";
 import AlternatingLoader from "./components/shared/Loader";
 import Summary from "./components/Summary";
+import { ResetButton } from "./components/ResetButton";
 
-let drawStacks = [
-  {
-    money: TarotCard.getNormalDraw(),
-    love: TarotCard.getNormalDraw(),
-    work: TarotCard.getNormalDraw(),
-  },
-  {
-    money: TarotCard.getReversedDraw(),
-    love: TarotCard.getReversedDraw(),
-    work: TarotCard.getReversedDraw(),
-  },
-  {
-    money: TarotCard.getMajorArcanaDraw(),
-    love: TarotCard.getMajorArcanaDraw(),
-    work: TarotCard.getMajorArcanaDraw(),
-  },
-];
+let drawStacks = TarotCard.getDrawStacks();
 
 const App = () => {
   const [form, setForm] = useState({
@@ -59,7 +44,7 @@ const App = () => {
   const resultsRef = useRef(null);
   const formRef = useRef();
 
-  const setTrue = (e) => {
+  const handleDraw = (e) => {
     e.preventDefault();
     setSent(true);
     setTimeout(() => {
@@ -74,23 +59,7 @@ const App = () => {
       setMoneyResponse();
       setLoveResponse();
       setworkResponse();
-      drawStacks = [
-        {
-          money: TarotCard.getNormalDraw(),
-          love: TarotCard.getNormalDraw(),
-          work: TarotCard.getNormalDraw(),
-        },
-        {
-          money: TarotCard.getReversedDraw(),
-          love: TarotCard.getReversedDraw(),
-          work: TarotCard.getReversedDraw(),
-        },
-        {
-          money: TarotCard.getMajorArcanaDraw(),
-          love: TarotCard.getMajorArcanaDraw(),
-          work: TarotCard.getMajorArcanaDraw(),
-        },
-      ];
+      drawStacks = TarotCard.getDrawStacks();
     }, 1000);
   };
 
@@ -175,7 +144,7 @@ const App = () => {
           />
           <CardSection sent={sent} stackId={stackId} setStackId={setStackId} />
           <Button
-            handleClick={setTrue}
+            handleClick={handleDraw}
             message="จั่วไพ่ 🫳"
             disabled={!isFormValid}
             sent={sent}
@@ -234,18 +203,3 @@ const App = () => {
 };
 
 export default App;
-
-export const ResetButton = ({ sent, handleResetDraw }) => {
-  return (
-    <>
-      {sent && (
-        <button
-          onClick={handleResetDraw}
-          className="block mx-auto animate-pulse w-32 h-16 rounded-t-xl bg-gradient-to-br from-blue-200 via-pink-300 to-purple-400 shadow-xl hover:shadow-2xl transition-all duration-300 text-white font-bold text-sm"
-        >
-          จั่วใหม่
-        </button>
-      )}
-    </>
-  );
-};

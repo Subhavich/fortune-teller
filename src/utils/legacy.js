@@ -1,3 +1,5 @@
+// import { WORK_RES, MONEY_RES, LOVE_RES } from "./utils/fakeResponses";
+
 // export const handleSendRequest2 = async (topic) => {
 //   const lowerTopic = topic.toLowerCase();
 

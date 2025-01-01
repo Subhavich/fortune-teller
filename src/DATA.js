@@ -245,6 +245,25 @@ export class TarotCard {
 
     return selectedCards;
   }
+  static getDrawStacks() {
+    return [
+      {
+        money: this.getNormalDraw(),
+        love: this.getNormalDraw(),
+        work: this.getNormalDraw(),
+      },
+      {
+        money: this.getReversedDraw(),
+        love: this.getReversedDraw(),
+        work: this.getReversedDraw(),
+      },
+      {
+        money: this.getMajorArcanaDraw(),
+        love: this.getMajorArcanaDraw(),
+        work: this.getMajorArcanaDraw(),
+      },
+    ];
+  }
 }
 
 export const FAKE_RESPONSE = {
