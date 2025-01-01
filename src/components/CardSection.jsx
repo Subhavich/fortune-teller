@@ -14,7 +14,7 @@ const CardSection = ({ stackId, setStackId }) => {
           stackId={stackId}
           handleClick={handleStackClick}
           bgUrl={card1}
-          shadowColor="shadow-[0_0_10px_5px_rgba(255,182,193,0.4)]"
+          shadowColor="0 0 10px 5px rgba(255,182,193,0.4)"
         />
       </div>
       <div className="relative col-span-4">
@@ -23,7 +23,7 @@ const CardSection = ({ stackId, setStackId }) => {
           stackId={stackId}
           handleClick={handleStackClick}
           bgUrl={card2}
-          shadowColor="shadow-[0_0_10px_5px_rgba(255,255,160,0.4)]"
+          shadowColor="0 0 10px 5px rgba(255,255,160,0.4)"
         />
       </div>
       <div className="relative col-span-4">
@@ -32,7 +32,7 @@ const CardSection = ({ stackId, setStackId }) => {
           stackId={stackId}
           handleClick={handleStackClick}
           bgUrl={card3}
-          shadowColor="shadow-[0_0_10px_5px_rgba(173,216,230,0.4)]"
+          shadowColor="0 0 10px 5px rgba(173,216,230,0.4)"
         />
       </div>
     </div>
@@ -57,8 +57,7 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
         return (
           <div
             key={index}
-            className={`absolute w-14 h-20 sm:w-20 sm:h-28 bg-white shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-110 ${
-              display ? shadowColor : ""
+            className={`absolute w-14 h-20 sm:w-20 sm:h-28 bg-white shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-110 
             }`}
             style={{
               transform: `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg)`,
@@ -67,6 +66,7 @@ const CardStack = ({ bgUrl, stackId, id, handleClick, shadowColor }) => {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              boxShadow: display ? shadowColor : "none", // Proper box-shadow applied here
             }}
             onClick={() => handleClick(id)}
           ></div>
