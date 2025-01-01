@@ -18,6 +18,7 @@ import { Button } from "./components/shared/Button";
 import { fetchTarotResponse } from "./utils/dataFetching";
 import StarRating from "./components/shared/StarRating";
 import Cards from "./components/Cards";
+import AlternatingLoader from "./components/shared/Loader";
 
 // Initialize OpenAI
 
@@ -130,7 +131,6 @@ const App = () => {
 
   const handleSendRequest2 = async (topic) => {
     const lowerTopic = topic.toLowerCase();
-    console.log(lowerTopic);
 
     setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
 
@@ -237,7 +237,7 @@ const App = () => {
                 >
                   ดูความหมาย 👁️
                 </button>
-                {loadingStates[topic.toLowerCase()] && <p>กำลังโหลด...</p>}
+                {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
                 {!loadingStates[topic.toLowerCase()] && responseToShow && (
                   <Summary response={responseToShow} />
                 )}
