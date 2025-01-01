@@ -199,7 +199,6 @@ const App = () => {
           </div>
         )}
       </div>
-      <ResetButton sent={sent} handleResetDraw={handleResetDraw} />
     </div>
   );
 };

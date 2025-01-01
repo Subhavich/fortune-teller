@@ -8,7 +8,7 @@ const Summary = ({ response }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center mt-4 space-y-2 tracking-wide"
+      className="text-center px-2 flex flex-col items-center mt-4 space-y-2 tracking-wide"
     >
       <p className="text-md py-2 font-bold">{response.topic}</p>
       <StarRating score={response.score} />
@@ -16,7 +16,9 @@ const Summary = ({ response }) => {
         {response.cards.map((card, ind) => (
           <div className="flex flex-col items-center space-y-2" key={ind}>
             <p className="text-sm font-bold">{getNameString(card)}</p>
-            <p className="text-sm">{card.meaning}</p>
+            <p className=" whitespace-normal break-words text-sm">
+              {card.meaning}
+            </p>
           </div>
         ))}
       </div>

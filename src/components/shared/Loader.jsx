@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 
 const AlternatingLoader = () => {
   const messages = [
-    "Shuffling the cards... 🃏",
-    "Drawing your destiny... ✨",
-    "Consulting the stars... 🌟",
+    "กำลังเปิดไพ่แห่งโชคชะตา... ✨",
+    "กำลังปรึกษาดวงดาว... 🌟",
+    "กำลังค้นหาความจริง... 🔮",
+    "เตรียมพร้อมรับคำตอบ... 🪄",
+    "กำลังรวบรวมพลังแห่งจักรวาล... 🌌",
   ];
   const [currentMessage, setCurrentMessage] = useState(messages[0]);
 
@@ -14,7 +16,7 @@ const AlternatingLoader = () => {
         const nextIndex = (messages.indexOf(prev) + 1) % messages.length;
         return messages[nextIndex];
       });
-    }, 500); // Change message every 1 second
+    }, 800); // Change message every 1 second
 
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, [messages]);
