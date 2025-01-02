@@ -11,7 +11,7 @@ export const fetchTarotResponse = async ({ systemPrompt, userPrompt }) => {
   console.time("API Call Duration");
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Recommend using gpt-4 for nuanced outputs
+      model: "gpt-4o", // Recommend using gpt-4 for nuanced outputs
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
