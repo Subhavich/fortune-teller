@@ -97,9 +97,13 @@ const App = () => {
       form.jobStatus,
       form.relationshipStatus,
       drawStacks[stackId]
-    )} ${deriveTopicString(topic, form.jobStatus, drawStacks[stackId].money)}`;
+    )} ${deriveTopicString(
+      topic,
+      form.jobStatus,
+      drawStacks[stackId][topic.toLowerCase()]
+    )}`;
 
-    // console.log(userPrompt);
+    console.log(userPrompt);
 
     const response = await fetchTarotResponse({
       systemPrompt: TAROT_PROMPT_SYSTEM,
