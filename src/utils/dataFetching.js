@@ -7,8 +7,19 @@ const openai = new OpenAI({
 });
 
 export const fetchTarotResponse = async ({ systemPrompt, userPrompt }) => {
-  console.log("PROMPTS ARE ", systemPrompt, userPrompt);
+  console.time("API Call Duration");
   try {
+    // const simulateError = true; // Set this to `true` to simulate an error
+
+    // if (simulateError) {
+    //   // Simulate an API-like asynchronous error
+    //   return await Promise.reject(
+    //     new Error(
+    //       "Insufficient funds: Your OpenAI account balance is too low to process this request."
+    //     )
+    //   );
+    // }
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // Recommend using gpt-4 for nuanced outputs
       messages: [
@@ -16,15 +27,30 @@ export const fetchTarotResponse = async ({ systemPrompt, userPrompt }) => {
         { role: "user", content: userPrompt },
       ],
     });
+
     console.timeEnd("API Call Duration");
 
-    // console.log("The response is here ! ", response);
     if (!response.choices[0].message.content) {
       throw new Error("Messed Up");
     }
-    console.log(sanitizeResponse(response.choices[0].message.content));
+
     return sanitizeResponse(response.choices[0].message.content);
   } catch (error) {
-    console.log(error);
+    console.error("API Error:", error.message);
+
+    // Handle insufficient funds simulation
+    if (error.message.includes("Insufficient funds")) {
+      return {
+        error: true,
+        message:
+          "Your OpenAI account balance is too low. Please add funds to continue.",
+      };
+    }
+
+    // General error handling
+    return {
+      error: true,
+      message: "An unexpected error occurred. Please try again later.",
+    };
   }
 };

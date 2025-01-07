@@ -116,13 +116,19 @@ const App = () => {
             drawStacks[stackId][topic.toLowerCase()]
           )}`;
 
-    console.log(userPrompt);
+    // console.log(userPrompt);
 
     const response = await fetchTarotResponse({
       systemPrompt:
         language === "th" ? TAROT_PROMPT_SYSTEM : TAROT_PROMPT_SYSTEM_ENG,
       userPrompt,
     });
+
+    if (response.error) {
+      alert(response.message); // Show error message
+      setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false })); // Update loading state
+      return;
+    }
 
     const result = response.reading[0];
 
