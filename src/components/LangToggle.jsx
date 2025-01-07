@@ -38,7 +38,7 @@ const LangToggle = ({ disabled }) => {
         }}
         disabled={disabled}
       >
-        <span className="relative z-10">ENG</span>
+        <span className="pl-4 relative z-10">ENG</span>
       </button>
 
       {/* Sliding Indicator */}
