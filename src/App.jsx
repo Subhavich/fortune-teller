@@ -2,8 +2,18 @@ import { motion } from "framer-motion";
 import { sectionVariants } from "./animations/animations";
 import { useState, useRef } from "react";
 
-import { TAROT_PROMPT_SYSTEM, TAROT_PROMPT_USER } from "./DATA";
-import { deriveExtension, deriveTopicString } from "./utils/prompts";
+import {
+  TAROT_PROMPT_SYSTEM,
+  TAROT_PROMPT_SYSTEM_ENG,
+  TAROT_PROMPT_USER_ENG,
+  TAROT_PROMPT_USER,
+} from "./DATA";
+import {
+  deriveExtension,
+  deriveTopicString,
+  deriveTopicString_eng,
+  deriveExtension_eng,
+} from "./utils/prompts";
 import { TarotCard } from "./DATA";
 import { fetchTarotResponse } from "./utils/dataFetching";
 
@@ -16,11 +26,14 @@ import { Button } from "./components/shared/Button";
 import Cards from "./components/Cards";
 import AlternatingLoader from "./components/shared/Loader";
 import Summary from "./components/Summary";
-import { ResetButton } from "./components/ResetButton";
+import LangToggle from "./components/LangToggle";
+import { useLanguage } from "./store/LangContext";
 
 let drawStacks = TarotCard.getDrawStacks();
 
 const App = () => {
+  const { language } = useLanguage(); // Access current language
+
   const [form, setForm] = useState({
     sex: "",
     date: "",
@@ -28,10 +41,10 @@ const App = () => {
     year: "",
     jobStatus: "",
     relationshipStatus: "",
-  }); // Store form state
+  });
   const [moneyResponse, setMoneyResponse] = useState();
   const [loveResponse, setLoveResponse] = useState();
-  const [workResponse, setworkResponse] = useState();
+  const [workResponse, setWorkResponse] = useState();
   const [loadingStates, setLoadingStates] = useState({
     money: false,
     love: false,
@@ -48,7 +61,7 @@ const App = () => {
     e.preventDefault();
     setSent(true);
     setTimeout(() => {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to results section
+      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
 
@@ -59,7 +72,7 @@ const App = () => {
       setSent(false);
       setMoneyResponse();
       setLoveResponse();
-      setworkResponse();
+      setWorkResponse();
       drawStacks = TarotCard.getDrawStacks();
     }, 300);
   };
@@ -72,45 +85,46 @@ const App = () => {
   const handleSendRequest = async (topic) => {
     const lowerTopic = topic.toLowerCase();
     setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
-    console.log(`Fetching response for ${lowerTopic}...`);
 
-    switch (lowerTopic) {
-      case "money":
-        console.log("money");
-        break;
-      case "love":
-        console.log("love");
-        break;
-      case "work":
-        console.log("work");
-        break;
-      default:
-        console.log("Invalid topic");
-        return; // Exit the function for invalid topics
-    }
-
-    const userPrompt = `${TAROT_PROMPT_USER} ${deriveExtension(
-      form.date,
-      form.month,
-      form.year,
-      form.sex,
-      form.jobStatus,
-      form.relationshipStatus,
-      drawStacks[stackId]
-    )} ${deriveTopicString(
-      topic,
-      form.jobStatus,
-      drawStacks[stackId][topic.toLowerCase()]
-    )}`;
+    // Dynamically choose prompts and functions based on language
+    const userPrompt =
+      language === "th"
+        ? `${TAROT_PROMPT_USER} ${deriveExtension(
+            form.date,
+            form.month,
+            form.year,
+            form.sex,
+            form.jobStatus,
+            form.relationshipStatus,
+            drawStacks[stackId]
+          )} ${deriveTopicString(
+            topic,
+            form.jobStatus,
+            drawStacks[stackId][topic.toLowerCase()]
+          )}`
+        : `${TAROT_PROMPT_USER_ENG} ${deriveExtension_eng(
+            form.date,
+            form.month,
+            form.year,
+            form.sex,
+            form.jobStatus,
+            form.relationshipStatus,
+            drawStacks[stackId]
+          )} ${deriveTopicString_eng(
+            topic,
+            form.jobStatus,
+            drawStacks[stackId][topic.toLowerCase()]
+          )}`;
 
     console.log(userPrompt);
 
     const response = await fetchTarotResponse({
-      systemPrompt: TAROT_PROMPT_SYSTEM,
+      systemPrompt:
+        language === "th" ? TAROT_PROMPT_SYSTEM : TAROT_PROMPT_SYSTEM_ENG,
       userPrompt,
     });
+
     const result = response.reading[0];
-    // console.log("HIT", response);
 
     switch (lowerTopic) {
       case "money":
@@ -120,21 +134,25 @@ const App = () => {
         setLoveResponse(result);
         break;
       case "work":
-        setworkResponse(result);
+        setWorkResponse(result);
         break;
     }
+
     setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false }));
   };
 
   return (
-    <div className="min-w-full bg-gray-50">
-      <div className="p-5 font-prompt  max-w-screen-sm mx-auto text-gray-800 ">
-        <h1 className="text-2xl font-bold mb-5 text-center">ถามไพ่ทาโรต์</h1>
+    <div className="min-w-full bg-white">
+      <div className="p-5 font-prompt max-w-screen-sm mx-auto text-gray-800">
+        <h1 className="text-2xl font-bold mb-5 text-center">
+          {language === "th" ? "ถามไพ่ทาโรต์" : "Ask Tarot Cards"}
+        </h1>
         <form
-          className="space-y-4 rounded-3xl bg-pink-200/75
-       p-8"
+          className="space-y-4 rounded-3xl bg-pink-200/75 p-8"
           ref={formRef}
         >
+          <LangToggle disabled={sent} />
+
           <fieldset disabled={sent} className={`${sent ? "opacity-50" : ""}`}>
             <SexInput value={form.sex} onChange={handleChange} />
             <DOBInput
@@ -153,7 +171,7 @@ const App = () => {
 
           <Button
             handleClick={handleDraw}
-            message="จั่วไพ่ 🫳"
+            message={language === "th" ? "จั่วไพ่ 🫳" : "Draw Cards 🫳"}
             disabled={!isFormValid}
             sent={sent}
             handleResetDraw={handleResetDraw}
@@ -163,12 +181,11 @@ const App = () => {
         {sent && (
           <div
             ref={resultsRef}
-            className=" flex flex-col space-y-8 mt-4 rounded-3xl bg-indigo-200/75 p-6"
+            className="flex flex-col space-y-8 mt-4 rounded-3xl bg-indigo-200/75 p-6"
           >
             {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
               let responseToShow = null;
 
-              // Match topic with the corresponding state
               if (topic.toLowerCase() === "money") {
                 responseToShow = moneyResponse;
               } else if (topic.toLowerCase() === "love") {
@@ -183,18 +200,18 @@ const App = () => {
                   variants={sectionVariants}
                   initial="hidden"
                   animate="visible"
-                  custom={ind} // Pass index for delay calculation
+                  custom={ind}
                   className="opacity-0"
                 >
                   <b className="mb-4 block text-center">
-                    {topic.toUpperCase()}
+                    {language === "th" ? topic.toUpperCase() : topic}
                   </b>
                   <Cards array={array} />
                   <button
                     className="mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl"
                     onClick={() => handleSendRequest(topic)}
                   >
-                    ดูความหมาย 👁️
+                    {language === "th" ? "ดูความหมาย 👁️" : "See Meaning 👁️"}
                   </button>
                   {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
                   {!loadingStates[topic.toLowerCase()] && responseToShow && (

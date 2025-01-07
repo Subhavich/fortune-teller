@@ -1,25 +1,40 @@
 import { useState, useEffect } from "react";
-
+import { useLanguage } from "../../store/LangContext";
 const AlternatingLoader = () => {
-  const messages = [
-    "กำลังเปิดไพ่แห่งโชคชะตา... ✨",
-    "กำลังปรึกษาดวงดาว... 🌟",
-    "กำลังค้นหาความจริง... 🔮",
-    "เตรียมพร้อมรับคำตอบ... 🪄",
-    "กำลังรวบรวมพลังแห่งจักรวาล... 🌌",
-  ];
-  const [currentMessage, setCurrentMessage] = useState(messages[0]);
+  const { language } = useLanguage(); // Access current language
+
+  // Language-specific messages
+  const messages = {
+    th: [
+      "กำลังเปิดไพ่แห่งโชคชะตา... ✨",
+      "กำลังปรึกษาดวงดาว... 🌟",
+      "กำลังค้นหาความจริง... 🔮",
+      "เตรียมพร้อมรับคำตอบ... 🪄",
+      "กำลังรวบรวมพลังแห่งจักรวาล... 🌌",
+    ],
+    en: [
+      "Unveiling the cards of fate... ✨",
+      "Consulting the stars... 🌟",
+      "Seeking the truth... 🔮",
+      "Preparing your answer... 🪄",
+      "Gathering cosmic energy... 🌌",
+    ],
+  };
+
+  const [currentMessage, setCurrentMessage] = useState(messages[language][0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMessage((prev) => {
-        const nextIndex = (messages.indexOf(prev) + 1) % messages.length;
-        return messages[nextIndex];
+        const currentMessages = messages[language];
+        const nextIndex =
+          (currentMessages.indexOf(prev) + 1) % currentMessages.length;
+        return currentMessages[nextIndex];
       });
-    }, 800); // Change message every 1 second
+    }, 800); // Change message every 0.8 seconds
 
     return () => clearInterval(interval); // Cleanup interval on unmount
-  }, [messages]);
+  }, [messages, language]);
 
   return (
     <div className="pt-8 flex items-center justify-center space-x-4">

@@ -7,8 +7,7 @@ const openai = new OpenAI({
 });
 
 export const fetchTarotResponse = async ({ systemPrompt, userPrompt }) => {
-  console.log("RUNNING FETCHING FUNC ...");
-  console.time("API Call Duration");
+  console.log("PROMPTS ARE ", systemPrompt, userPrompt);
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // Recommend using gpt-4 for nuanced outputs
