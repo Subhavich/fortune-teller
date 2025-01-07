@@ -2,18 +2,25 @@ import card0 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
 import card1 from "../assets/Tarot3.png";
 import { useEffect, useState } from "react";
+
 const DECK_DETAILS = [
   {
     title: "Pendragon Rules",
-    desc: "Normal Draw ใช้ไพ่ทั้งหมด 78 ใบในการอ่านไพ่ โดยความหมายของไพ่จะปรากฏตรงไปตรงมาและไม่ซับซ้อน การ์ดจะไม่มีการกลับด้าน ทำให้การตีความง่ายและตรงไปตรงมา",
+    desc: "Normal Draw ใช้ไพ่ทั้งหมด 78 ใบ ความหมายของไพ่จะปรากฏอย่างตรงไปตรงมาและไม่มีการกลับด้าน การตีความเป็นไปอย่างชัดเจนและไม่ซับซ้อน เหมาะสำหรับผู้ที่ต้องการคำตอบที่เรียบง่ายและตรงจุด",
+    descEng:
+      "Normal Draw uses all 78 tarot cards. The meanings of the cards appear straightforward and without reversals. Interpretations are clear and simple, ideal for those seeking direct and uncomplicated answers.",
   },
   {
     title: "Morgana Rules",
-    desc: "Reversed Draw อนุญาตให้มีการกลับด้านของไพ่ ความหมายของไพ่ในตำแหน่งกลับด้านจะแตกต่างจากตำแหน่งปกติ แสดงถึงความท้าทาย ความจริงที่ซ่อนอยู่ หรือมุมมองที่แตกต่าง",
+    desc: "Reversed Draw ไพ่สามารถออกกลับด้าน ซึ่งตำแหน่งกลับด้านจะเปลี่ยนความหมายของไพ่ แสดงถึงมุมมองที่แตกต่าง ความหมายที่ซ่อนเร้น หรือสิ่งที่ควรระวัง เหมาะกับการตีความที่ลึกซึ้งและมีหลายมิติ",
+    descEng:
+      "Reversed Draw allows cards to appear upside-down, changing their original meanings. It reflects different perspectives, hidden insights, or cautionary elements in a situation. Ideal for those seeking deeper, multi-dimensional interpretations.",
   },
   {
     title: "Merlin Rules",
-    desc: "Major-Only Draw ใช้เฉพาะไพ่ Major Arcana ทั้งหมด 22 ใบ การ์ดเหล่านี้มีน้ำหนักในเชิงสัญลักษณ์สูง มุ่งเน้นเหตุการณ์สำคัญในชีวิต การเปิดเผยเชิงลึก และอิทธิพลจากพลังสวรรค์",
+    desc: "Major-Only Draw ใช้เฉพาะไพ่ Major Arcana 22 ใบ ไพ่เหล่านี้มุ่งเน้นเหตุการณ์สำคัญ การตีความเชิงลึก และความหมายที่ทรงพลัง เหมาะสำหรับคำถามที่เกี่ยวข้องกับโชคชะตาและธีมสำคัญในชีวิต",
+    descEng:
+      "Major-Only Draw uses only the 22 Major Arcana cards. These cards focus on significant events, deep interpretations, and powerful meanings. Ideal for questions related to destiny and major life themes.",
   },
 ];
 
@@ -32,7 +39,9 @@ const CardSection = ({ stackId, setStackId, sent }) => {
   return (
     <>
       <div className=" leading-relaxed tracking-wide flex flex-col items-center text-center space-y-4">
-        <div className="mt-4 font-bold text-gray-800">เลือกกองไพ่</div>
+        <div className="mt-8 text-3xl font-semibold text-gray-800">
+          เลือกกองไพ่
+        </div>
         <p className="text-lg font-light  text-gray-800">{deckInfo.title}</p>
         <p className="text-gray-800 leading-loose">{deckInfo.desc}</p>
       </div>
