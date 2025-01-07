@@ -1,4 +1,5 @@
 import { ResetButton } from "../ResetButton";
+import { useLanguage } from "../../store/LangContext"; // Import the useLanguage hook
 
 export const Button = ({
   handleClick,
@@ -7,9 +8,29 @@ export const Button = ({
   sent,
   handleResetDraw,
 }) => {
+  const { language } = useLanguage(); // Access current language
+
+  // Translations for button text
+  const translations = {
+    th: {
+      reset: "เริ่มใหม่",
+      selectPrompt: "เลือกข้อมูลด้านบน",
+    },
+    en: {
+      reset: "Reset",
+      selectPrompt: "Please fill in the form",
+    },
+  };
+
   return (
     <>
-      {sent && <ResetButton handleResetDraw={handleResetDraw} sent={sent} />}
+      {sent && (
+        <ResetButton
+          handleResetDraw={handleResetDraw}
+          sent={sent}
+          message={translations[language].reset}
+        />
+      )}
       {!sent && (
         <button
           onClick={handleClick}
@@ -21,7 +42,8 @@ export const Button = ({
           }`}
           disabled={disabled || sent} // Disable the button while loading
         >
-          {disabled ? "เลือกข้อมูลด้านบน" : message}
+          {disabled ? translations[language].selectPrompt : message}{" "}
+          {/* Use message if not disabled */}
         </button>
       )}
     </>
