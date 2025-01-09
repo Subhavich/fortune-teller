@@ -150,8 +150,8 @@ const App = () => {
   return (
     <div className="min-w-full bg-white">
       <div className="p-5 font-prompt max-w-screen-sm mx-auto text-gray-800">
-        <h1 className="text-2xl font-bold mb-5 text-center">
-          {language === "th" ? "ถามไพ่ทาโรต์" : "Ask Tarot Cards"}
+        <h1 className="text-2xl font-bold mb-5 text-center font-mono">
+          {language === "th" ? "manymu.io" : "manymu.io"}
         </h1>
         <form
           className="space-y-4 rounded-3xl bg-pink-200/75 p-8"
