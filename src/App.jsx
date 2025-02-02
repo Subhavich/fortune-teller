@@ -84,9 +84,12 @@ const App = () => {
 
   const handleSendRequest = async (topic) => {
     const lowerTopic = topic.toLowerCase();
+
+    // Prevent duplicate requests by checking if already loading
+    if (loadingStates[lowerTopic]) return;
+
     setLoadingStates((prev) => ({ ...prev, [lowerTopic]: true }));
 
-    // Dynamically choose prompts and functions based on language
     const userPrompt =
       language === "th"
         ? `${TAROT_PROMPT_USER} ${deriveExtension(
@@ -116,8 +119,6 @@ const App = () => {
             drawStacks[stackId][topic.toLowerCase()]
           )}`;
 
-    // console.log(userPrompt);
-
     const response = await fetchTarotResponse({
       systemPrompt:
         language === "th" ? TAROT_PROMPT_SYSTEM : TAROT_PROMPT_SYSTEM_ENG,
@@ -125,8 +126,8 @@ const App = () => {
     });
 
     if (response.error) {
-      alert(response.message); // Show error message
-      setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false })); // Update loading state
+      alert(response.message);
+      setLoadingStates((prev) => ({ ...prev, [lowerTopic]: false }));
       return;
     }
 
@@ -214,8 +215,13 @@ const App = () => {
                   </b>
                   <Cards array={array} stackId={stackId} />
                   <button
-                    className="mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl"
+                    className={`mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl ${
+                      loadingStates[topic.toLowerCase()]
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
                     onClick={() => handleSendRequest(topic)}
+                    disabled={loadingStates[topic.toLowerCase()]} // Disable button while loading
                   >
                     {language === "th" ? "ดูความหมาย 👁️" : "See Meaning 👁️"}
                   </button>
