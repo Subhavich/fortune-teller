@@ -6,19 +6,42 @@ import card1 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
 
 const arr = [card0, card1, card2];
-const Cards = ({ array, stackId }) => {
-  const cardBack = arr[stackId];
+const Cards = ({ array, stackId, makeValid }) => {
+  const cardBack = arr[stackId]; // Assuming `arr` contains backgrounds
+  const [flippedStates, setFlippedStates] = useState(
+    new Array(array.length).fill(false) // Track flipped state for each card
+  );
+
+  useEffect(() => {
+    // Check if all cards are flipped
+    if (flippedStates.every((flipped) => flipped)) {
+      makeValid(); // Call `makeValid` when all cards are flipped
+    }
+  }, [flippedStates, makeValid]);
+
+  const handleFlip = (index) => {
+    setFlippedStates((prev) =>
+      prev.map((state, i) => (i === index ? true : state))
+    );
+  };
+
   return (
     <div className="grid grid-cols-12">
       {array.map((card, ind) => (
-        <Card key={ind} card={card} cardBack={cardBack} />
+        <Card
+          key={ind}
+          card={card}
+          cardBack={cardBack}
+          onFlip={() => handleFlip(ind)} // Pass flip handler
+        />
       ))}
     </div>
   );
 };
+
 export default Cards;
 
-const Card = ({ card, cardBack }) => {
+const Card = ({ card, cardBack, onFlip }) => {
   const [flipped, setFlipped] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSrc, setImageSrc] = useState(cardBack);
@@ -35,6 +58,13 @@ const Card = ({ card, cardBack }) => {
     }
   }, [flipped, card.name_short]);
 
+  const handleFlip = () => {
+    if (!flipped) {
+      setFlipped(true);
+      onFlip(); // Notify parent when flipped
+    }
+  };
+
   return (
     <div className="col-span-4 flex flex-col space-y-2 items-center">
       <motion.div
@@ -42,7 +72,7 @@ const Card = ({ card, cardBack }) => {
         initial={false}
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.6 }}
-        onClick={() => setFlipped(true)}
+        onClick={handleFlip} // Trigger flip logic
       >
         {/* Front Card (Backside) */}
         {!flipped && (
@@ -64,7 +94,7 @@ const Card = ({ card, cardBack }) => {
           >
             {!imageLoaded && (
               <motion.div className="w-full h-full flex items-center justify-center text-xs rounded-sm border bg-rose-800 border-gray-500 relative overflow-hidden">
-                <p className="text-gray-700  font-mono text-xl animate-pulse">
+                <p className="text-gray-700 font-mono text-xl animate-pulse">
                   ⭐
                 </p>
               </motion.div>

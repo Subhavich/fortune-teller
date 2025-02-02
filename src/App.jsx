@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { sectionVariants } from "./animations/animations";
 import { useState, useRef } from "react";
 
@@ -16,7 +16,6 @@ import {
 } from "./utils/prompts";
 import { TarotCard } from "./DATA";
 import { fetchTarotResponse } from "./utils/dataFetching";
-
 import SexInput from "./components/SexInput";
 import DOBInput from "./components/DOBInput";
 import RelationshipInput from "./components/RelationshipInput";
@@ -190,48 +189,22 @@ const App = () => {
             ref={resultsRef}
             className="flex flex-col space-y-8 mt-4 rounded-3xl bg-indigo-200/75 p-6"
           >
-            {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => {
-              let responseToShow = null;
-
-              if (topic.toLowerCase() === "money") {
-                responseToShow = moneyResponse;
-              } else if (topic.toLowerCase() === "love") {
-                responseToShow = loveResponse;
-              } else if (topic.toLowerCase() === "work") {
-                responseToShow = workResponse;
-              }
-
-              return (
-                <motion.div
-                  key={topic}
-                  variants={sectionVariants}
-                  initial="hidden"
-                  animate="visible"
-                  custom={ind}
-                  className="opacity-0"
-                >
-                  <b className="mb-4 block text-center">
-                    {language === "th" ? topic.toUpperCase() : topic}
-                  </b>
-                  <Cards array={array} stackId={stackId} />
-                  <button
-                    className={`mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl ${
-                      loadingStates[topic.toLowerCase()]
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                    onClick={() => handleSendRequest(topic)}
-                    disabled={loadingStates[topic.toLowerCase()]} // Disable button while loading
-                  >
-                    {language === "th" ? "ดูความหมาย 👁️" : "See Meaning 👁️"}
-                  </button>
-                  {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
-                  {!loadingStates[topic.toLowerCase()] && responseToShow && (
-                    <Summary response={responseToShow} />
-                  )}
-                </motion.div>
-              );
-            })}
+            {Object.entries(drawStacks[stackId]).map(([topic, array], ind) => (
+              <CardMat
+                key={topic}
+                topic={topic}
+                array={array}
+                ind={ind}
+                stackId={stackId}
+                workResponse={workResponse}
+                loveResponse={loveResponse}
+                moneyResponse={moneyResponse}
+                index={ind}
+                language={language}
+                loadingStates={loadingStates}
+                handleSendRequest={handleSendRequest}
+              />
+            ))}
           </div>
         )}
       </div>
@@ -240,3 +213,73 @@ const App = () => {
 };
 
 export default App;
+
+const CardMat = ({
+  handleSendRequest,
+  stackId,
+  topic,
+  array,
+  workResponse,
+  moneyResponse,
+  loveResponse,
+  index,
+  language,
+  loadingStates,
+}) => {
+  const [valid, setValid] = useState(false);
+
+  const makeValid = () => {
+    setValid(true);
+  };
+
+  let responseToShow = null;
+
+  if (topic.toLowerCase() === "money") {
+    responseToShow = moneyResponse;
+  } else if (topic.toLowerCase() === "love") {
+    responseToShow = loveResponse;
+  } else if (topic.toLowerCase() === "work") {
+    responseToShow = workResponse;
+  }
+
+  return (
+    <motion.div
+      key={topic}
+      variants={sectionVariants}
+      initial="hidden"
+      animate="visible"
+      custom={index}
+      className="opacity-0"
+    >
+      <b className="mb-4 block text-center">
+        {language === "th" ? topic.toUpperCase() : topic}
+      </b>
+      <Cards array={array} stackId={stackId} makeValid={makeValid} />
+
+      <AnimatePresence>
+        {valid && (
+          <motion.button
+            className={`mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl ${
+              loadingStates[topic.toLowerCase()]
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            onClick={() => handleSendRequest(topic)}
+            disabled={loadingStates[topic.toLowerCase()]}
+            initial={{ opacity: 0, y: -10 }} // Start off-screen
+            animate={{ opacity: 1, y: 0 }} // Animate in
+            exit={{ opacity: 0, y: 10 }} // Animate out
+            transition={{ duration: 0.4, ease: "easeOut" }} // Smooth transition
+          >
+            {language === "th" ? "ดูความหมาย 👁️" : "See Meaning 👁️"}
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {loadingStates[topic.toLowerCase()] && <AlternatingLoader />}
+      {!loadingStates[topic.toLowerCase()] && responseToShow && (
+        <Summary response={responseToShow} />
+      )}
+    </motion.div>
+  );
+};
