@@ -254,7 +254,12 @@ const CardMat = ({
       <b className="mb-4 block text-center">
         {language === "th" ? topic.toUpperCase() : topic}
       </b>
-      <Cards array={array} stackId={stackId} makeValid={makeValid} />
+      <Cards
+        array={array}
+        language={language}
+        stackId={stackId}
+        makeValid={makeValid}
+      />
 
       <AnimatePresence>
         {valid && (

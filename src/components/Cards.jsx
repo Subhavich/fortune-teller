@@ -6,7 +6,7 @@ import card1 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
 
 const arr = [card0, card1, card2];
-const Cards = ({ array, stackId, makeValid }) => {
+const Cards = ({ array, stackId, makeValid, language }) => {
   const cardBack = arr[stackId]; // Assuming `arr` contains backgrounds
   const [flippedStates, setFlippedStates] = useState(
     new Array(array.length).fill(false) // Track flipped state for each card
@@ -29,6 +29,7 @@ const Cards = ({ array, stackId, makeValid }) => {
     <div className="grid grid-cols-12">
       {array.map((card, ind) => (
         <Card
+          language={language}
           key={ind}
           card={card}
           cardBack={cardBack}
@@ -41,7 +42,7 @@ const Cards = ({ array, stackId, makeValid }) => {
 
 export default Cards;
 
-const Card = ({ card, cardBack, onFlip }) => {
+const Card = ({ card, cardBack, onFlip, language }) => {
   const [flipped, setFlipped] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSrc, setImageSrc] = useState(cardBack);
@@ -104,7 +105,9 @@ const Card = ({ card, cardBack, onFlip }) => {
       </motion.div>
 
       <p className="max-w-full px-2 font-mono text-xs text-center">
-        {flipped && imageLoaded ? getNameString(card) : "Draw"}
+        {flipped && imageLoaded
+          ? getNameString(card)
+          : (language = "th" ? "ดูไพ่" : "See My Draw")}
       </p>
     </div>
   );
