@@ -1,6 +1,6 @@
-import card0 from "../assets/Tarot1.png";
+import card0 from "../assets/Tarot0.png";
+import card1 from "../assets/Tarot1.png";
 import card2 from "../assets/Tarot2.png";
-import card1 from "../assets/Tarot3.png";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../store/LangContext"; // Adjust path as necessary
 import { motion, AnimatePresence } from "framer-motion";

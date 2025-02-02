@@ -1,22 +1,24 @@
 import { getNameString } from "../utils/prompts";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import card0 from "../assets/Tarot1.png";
+import card0 from "../assets/Tarot0.png";
+import card1 from "../assets/Tarot1.png";
+import card2 from "../assets/Tarot2.png";
 
-const cardBack = card0;
-
-const Cards = ({ array }) => {
+const arr = [card0, card1, card2];
+const Cards = ({ array, stackId }) => {
+  const cardBack = arr[stackId];
   return (
     <div className="grid grid-cols-12">
       {array.map((card, ind) => (
-        <Card key={ind} card={card} />
+        <Card key={ind} card={card} cardBack={cardBack} />
       ))}
     </div>
   );
 };
 export default Cards;
 
-const Card = ({ card }) => {
+const Card = ({ card, cardBack }) => {
   const [flipped, setFlipped] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSrc, setImageSrc] = useState(cardBack);

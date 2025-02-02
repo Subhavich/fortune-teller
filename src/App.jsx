@@ -212,7 +212,7 @@ const App = () => {
                   <b className="mb-4 block text-center">
                     {language === "th" ? topic.toUpperCase() : topic}
                   </b>
-                  <Cards array={array} />
+                  <Cards array={array} stackId={stackId} />
                   <button
                     className="mt-4 mx-auto block bg-white border px-3 py-2 rounded-xl"
                     onClick={() => handleSendRequest(topic)}
