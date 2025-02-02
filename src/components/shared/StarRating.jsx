@@ -2,19 +2,24 @@ import React from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 const StarRating = ({ score }) => {
-  // Calculate the number of full, half, and empty stars
-  const fullStars = Math.floor(score); // Whole number part
-  const hasHalfStar = score % 1 >= 0.5; // Check for a half star
+  const fullStars = Math.floor(score); // Count of full stars
+  const hasHalfStar = score % 1 >= 0.5; // Check if there's a half star
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0); // Remaining empty stars
 
   return (
     <div className="pb-1 flex items-center space-x-1">
-      {/* Render full stars */}
+      {/* Full Stars */}
       {[...Array(fullStars)].map((_, index) => (
-        <FaStar key={`full-${index}`} className=" text-fuchsia-500" />
+        <FaStar key={`full-${index}`} className="text-pink-500" />
       ))}
 
-      {/* Render half star */}
-      {hasHalfStar && <FaStarHalfAlt className=" text-fuchsia-500" />}
+      {/* Half Star (if applicable) */}
+      {hasHalfStar && <FaStarHalfAlt className="text-pink-500" />}
+
+      {/* Empty Stars */}
+      {[...Array(emptyStars)].map((_, index) => (
+        <FaRegStar key={`empty-${index}`} className="text-gray-500 " />
+      ))}
     </div>
   );
 };
